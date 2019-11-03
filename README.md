@@ -51,12 +51,12 @@ O projeto é um protótipo de um sistema para uma escola o qual possibilitará g
 
 # Organização
 
-├───README.md
-├───programa.c
-├───db /\* para arquivos de dados usados na aplicação \*/
-├───include /\* *para arquivos de cabeçalho (.h)* \*/
-├───obj /\* *para arquivos objeto (.o) resultantes de compilação* \*/
-└───src /\* *para arquivos de recurso (bibliotecas, etc)*  \*/
+├───README.md<br/>
+├───programa.c<br/>
+├───db /\* para arquivos de dados usados na aplicação \*/<br/>
+├───include /\* *para arquivos de cabeçalho (.h)* \*/<br/>
+├───obj /\* *para arquivos objeto (.o) resultantes de compilação* \*/<br/>
+└───src /\* *para arquivos de recurso (bibliotecas, etc)*  \*/<br/>
 
 ### Compilar e executar
 #### Windows
