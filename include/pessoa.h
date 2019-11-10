@@ -6,7 +6,9 @@
 #define ERRO_CADASTRO_SEXO 3
 
 typedef struct dma{
-	int dia, mes, ano;
+	int dia;
+	int mes;
+	int ano;
 } Data;
 
 typedef struct pessoa{
@@ -21,6 +23,8 @@ int menu_Pessoa();
 
 int inserir_Pessoa(Pessoa lista[], int qtd);
 
-void listar_Pessoa(Pessoa lista[], int qtd);
+void listar_Pessoa(Pessoa lista[], int qtd, char sexo);
+
+void ordenarListaPorNome(Pessoa lista[], int max);
 
 #endif

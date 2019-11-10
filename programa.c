@@ -33,7 +33,7 @@ int main(void){
 
 		switch(opcaoPrincipal){
 
-			case 1:{ // Menu Aluno
+			case 1:{	// Menu Aluno
 
 				voltarAluno = 0;
 
@@ -70,7 +70,7 @@ int main(void){
 						}
 						case 2:{
 							printf("\n#### Alunos Cadastrados ###\n\n");
-							listar_Pessoa(lista_aluno, qtd_aluno);
+							listar_Pessoa(lista_aluno, qtd_aluno, '-');
 							break;
 						}
 						case 5:{
@@ -87,7 +87,7 @@ int main(void){
 				break;
 			}
 
-			case 2:{ //Menu Professor
+			case 2:{	//Menu Professor
 
 				voltarProfessor = 0;
 
@@ -124,7 +124,7 @@ int main(void){
 						}
 						case 2:{
 							printf("\n#### Professores Cadastrados ###\n\n");
-							listar_Pessoa(lista_professor, qtd_professor);
+							listar_Pessoa(lista_professor, qtd_professor, '-');
 							break;
 						}
 						case 5:{
