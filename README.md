@@ -60,7 +60,7 @@ O projeto é um protótipo de um sistema para uma escola o qual possibilitará g
 
 ### Compilar e executar
 #### Windows
-	Para compilar e executar, caso esteja usando o MinGW, basta processar o comando "gcc programa.c -o programa && programa" no terminal.
+	Para compilar e executar, caso esteja usando o MinGW, basta processar o comando "gcc programa.c -o obj/programa", para executar "programa" no terminal.
 
 #### Linux
-	Para compilar execute o comando "gcc programa.c -o programa", para executar "./programa".
+	Para compilar execute o comando "gcc programa.c -o obj/programa", para executar "./programa".
