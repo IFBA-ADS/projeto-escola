@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "../include/pessoa.h"
 
@@ -51,21 +52,20 @@ int inserir_Pessoa(Pessoa lista[], int qtd){
 		lista[qtd].nome[ln] = '\0';
 
 	printf("\nDigite o Sexo\n");
-	scanf("%c", &lista[qtd].sexo);
+	scanf("%1c", &lista[qtd].sexo);
+	fflush(stdin);
 
 	lista[qtd].sexo = toupper(lista[qtd].sexo); //Converte Minuscula para Maiuscula
 	if(lista[qtd].sexo != 'M' && lista[qtd].sexo != 'F')
 		return ERRO_CADASTRO_SEXO;
 	
-	int idade;
-	printf("\nDigite a Idade no formato xx/xx/xxxx\n");
-	scanf("%d", &idade);
-	getchar();
+	char nascimento[TAM_DATA];
+	printf("\nDigite a data de nascimento no formato 99/99/9999\n");
+	fgets(nascimento, TAM_DATA, stdin);
 	fflush(stdin);
 
-	lista[qtd].data_nascimento.dia = idade / 1000000;
-	lista[qtd].data_nascimento.mes = idade % 1000000 / 10000;
-	lista[qtd].data_nascimento.ano = idade % 1000000 % 10000;
+	if(validarData(nascimento, &lista[qtd].data_nascimento) == 0)
+		return ERRO_CADASTRO_DATA;
 
 	printf("\nDigite o CPF no formato 999.999.999-99\n");
 	fgets(lista[qtd].cpf, TAM_CPF, stdin);
@@ -90,6 +90,10 @@ void printarMensagemDeErro_Pessoa(int codigo){
 		}
 		case ERRO_CADASTRO_CPF:{
 			printf("CPF Invalido\n");
+			break;
+		}
+		case ERRO_CADASTRO_DATA:{
+			printf("Data Invalida\n");
 			break;
 		}
 		default:{
@@ -215,4 +219,52 @@ void removerChar(char string[], int tamanho, char remover){
 		string[i] = string[j];
 	}
 	string[i + 1] = '\0';
+}
+
+int validarData(char strData[TAM_DATA], Data* data){
+	int tamanhoCompactado = 8;
+	char nascimento[TAM_DATA];
+	strcpy(nascimento, strData);
+	removerChar(nascimento, TAM_DATA, '/');
+	if(strlen(nascimento) != tamanhoCompactado)
+		return 0;
+
+	int i, valido = 1;
+	for(i = 0; i < tamanhoCompactado && valido == 1; i++)
+		if(nascimento[i] < 48 || nascimento[i] > 57)
+			valido = 0;
+	
+	if(valido == 0)
+		return valido;
+
+	int dia, mes, ano;
+	dia = ((nascimento[0] - '0') * 10) + (nascimento[1] - '0');
+	mes = ((nascimento[2] - '0') * 10) + (nascimento[3] - '0');
+	if(mes < 1 || mes > 12)
+		return 0;
+	
+	ano = ((nascimento[4] - '0') * 1000) + ((nascimento[5] - '0') * 100) + ((nascimento[6] - '0') * 10) + (nascimento[7] - '0');
+	if(ano < 1900 || ano > anoAtual())
+		return 0;
+
+	if (((dia >= 1 && dia <= 31) && (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12)) ||
+		(dia == 29 && mes == 2 && (ano % 400 == 0 || (ano % 4 == 0 && ano % 100 != 0))) ||
+		((dia >= 1 && dia <= 30) && (mes == 4 || mes == 6 || mes == 9 || mes == 11)) ||
+		((dia >= 1 && dia <= 28) && (mes == 2))){
+
+		data->dia = dia;
+		data->mes = mes;
+		data->ano = ano;
+
+		return 1;
+	}
+
+	return 0;
+}
+
+int anoAtual(){
+	time_t mytime;
+    mytime = time(NULL);
+    struct tm tm = *localtime(&mytime);
+    return tm.tm_year + 1900;
 }

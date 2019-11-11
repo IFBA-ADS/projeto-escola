@@ -5,8 +5,10 @@
 #define ERRO_CADASTRO_MATRICULA 2
 #define ERRO_CADASTRO_SEXO 3
 #define ERRO_CADASTRO_CPF 4
+#define ERRO_CADASTRO_DATA 5
 
 #define TAM_CPF 15
+#define TAM_DATA 11
 
 typedef struct dma{
 	int dia;
@@ -39,5 +41,9 @@ void ordenarListaPorNome(Pessoa lista[], int max);
 int validarCPF(char string[TAM_CPF]);
 
 void removerChar(char string[], int tamanho, char remover);
+
+int validarData(char strData[TAM_DATA], Data* data);
+
+int anoAtual();
 
 #endif
