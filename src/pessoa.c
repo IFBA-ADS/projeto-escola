@@ -39,18 +39,17 @@ int menuListar_Pessoa(){
 
 int inserir_Pessoa(Pessoa lista[], int qtd){
 
-	printf("Digite a Matricula\n");
+	printf("\nDigite a Matricula\n");
 	scanf("%d", &lista[qtd].matricula);
-	getchar();
+	fflush(stdin);
 	if (lista[qtd].matricula <= 0)
 		return ERRO_CADASTRO_MATRICULA;
 
 	printf("\nDigite o Nome\n");
-	fgets(lista[qtd].nome, 100, stdin);
+	fgets(lista[qtd].nome, TAM_NOME, stdin);
+	fflush(stdin);
 
-	size_t ln = strlen(lista[qtd].nome) - 1;
-	if(lista[qtd].nome[ln] = '\n') // SUBSTITUO O \n por \0
-		lista[qtd].nome[ln] = '\0';
+	removerQuebraDeLinha(lista[qtd].nome, strlen(lista[qtd].nome));
 
 	printf("\nDigite o Sexo\n");
 	scanf("%1c", &lista[qtd].sexo);
@@ -70,6 +69,7 @@ int inserir_Pessoa(Pessoa lista[], int qtd){
 
 	printf("\nDigite o CPF no formato 999.999.999-99\n");
 	fgets(lista[qtd].cpf, TAM_CPF, stdin);
+	fflush(stdin);
 	if(validarCPF(lista[qtd].cpf) == 0)
 		return ERRO_CADASTRO_CPF;
 
@@ -117,7 +117,7 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
 			break;
 		}
 		case 3: {
-			printf("Digite o sexo pelo qual deseja filtrar [m/f]\n");
+			printf("\nDigite o sexo pelo qual deseja filtrar [m/f]\n");
 			char sexo;
 			scanf("%1c", &sexo);
 
@@ -132,9 +132,11 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
 		}
 		case 4: {
 			char busca[TAM_NOME];
+			int tamanhoBusca;
 			do{
-				printf("Digite o termo de busca\n");
+				printf("\nDigite o termo de busca\n");
 				fgets(busca, TAM_NOME, stdin);
+				removerQuebraDeLinha(busca, strlen(busca));
 				if(strlen(busca) < 3)
 					printf("Minimo de 3 caracteres\n");
 			}while(strlen(busca) < 3);
@@ -148,14 +150,13 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
 	}
 }
 
-void listar_Pessoa(Pessoa lista[], int qtd, char sexo, char busca[3]){
+void listar_Pessoa(Pessoa lista[], int qtd, char sexo, char busca[TAM_NOME]){
 	int i;
 
 	ordenarListaPorNome(lista, qtd);
 
 	for(i = 0; i < qtd; i++){
-		//TODO: verificar se essa condicional esta correta
-		if((sexo == '-' || lista[i].sexo == toupper(sexo) && (strcmp(busca, "---") == 0 || strstr(lista[i].nome, busca) - lista[i].nome >= 0))){
+		if((sexo == '-' || lista[i].sexo == toupper(sexo)) && (strcmp(busca, "---") == 0 || strstr(lista[i].nome, busca) - lista[i].nome >= 0)){
 			printf("------\n");
 			printf("Matricula: %d\n", lista[i].matricula);
 			printf("Nome: %s\n", lista[i].nome);
@@ -280,4 +281,9 @@ int anoAtual(){
     mytime = time(NULL);
     struct tm tm = *localtime(&mytime);
     return tm.tm_year + 1900;
+}
+
+void removerQuebraDeLinha(char string[], int tamanho){
+	if(string[tamanho - 1] == '\n')
+		string[tamanho - 1] = '\0';
 }

@@ -9,7 +9,7 @@
 
 #define TAM_CPF 15
 #define TAM_DATA 11
-#define TAM_NOME 11
+#define TAM_NOME 100
 
 typedef struct dma{
 	int dia;
@@ -35,7 +35,7 @@ int inserir_Pessoa(Pessoa lista[], int qtd);
 
 void printarMensagemDeErro_Pessoa(int codigo);
 
-void listar_Pessoa(Pessoa lista[], int qtd, char sexo, char busca[3]);
+void listar_Pessoa(Pessoa lista[], int qtd, char sexo, char busca[TAM_NOME]);
 
 void ordenarListaPorNome(Pessoa lista[], int max);
 
@@ -46,5 +46,7 @@ void removerChar(char string[], int tamanho, char remover);
 int validarData(char strData[TAM_DATA], Data* data);
 
 int anoAtual();
+
+void removerQuebraDeLinha(char string[], int tamanho);
 
 #endif
