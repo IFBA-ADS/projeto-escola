@@ -45,7 +45,7 @@ void removerChar(char string[], int tamanho, char remover);
 
 int validarData(char strData[TAM_DATA], Data* data);
 
-int anoAtual();
+Data dataAtual();
 
 void removerQuebraDeLinha(char string[], int tamanho);
 

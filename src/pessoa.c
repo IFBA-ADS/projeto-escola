@@ -28,7 +28,8 @@ int menuListar_Pessoa(){
 	printf("1 - Ordenado por nome\n");
 	printf("2 - Ordenado por data de nascimento\n");
 	printf("3 - Filtrar por sexo\n");
-	printf("4 - Filtrar por nome\n\n");
+	printf("4 - Filtrar por nome\n");
+	printf("5 - Aniversariantes do mes\n\n");
 
 	printf("Digite a sua opcao\n");
 	scanf("%d",&opcao);
@@ -79,7 +80,7 @@ int inserir_Pessoa(Pessoa lista[], int qtd){
 }
 
 void printarMensagemDeErro_Pessoa(int codigo){
-	printf("Nao foi possivel fazer o Cadastro. Erro: ");
+	printf("\nNao foi possivel fazer o Cadastro. Erro: ");
 	switch(codigo){
 		case ERRO_CADASTRO_MATRICULA:{
 			printf("Matricula Invalida\n");
@@ -141,6 +142,10 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
 					printf("Minimo de 3 caracteres\n");
 			}while(strlen(busca) < 3);
 			listar_Pessoa(lista, qtd, '-', busca);
+			break;
+		}
+		case 5: {
+			printf("Nao implementado\n\n");
 			break;
 		}
 		default: {
@@ -258,7 +263,8 @@ int validarData(char strData[TAM_DATA], Data* data){
 		return 0;
 	
 	ano = ((nascimento[4] - '0') * 1000) + ((nascimento[5] - '0') * 100) + ((nascimento[6] - '0') * 10) + (nascimento[7] - '0');
-	if(ano < 1900 || ano > anoAtual())
+	Data dataA = dataAtual();
+	if(ano < 1900 || ano > dataA.ano)
 		return 0;
 
 	if (((dia >= 1 && dia <= 31) && (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12)) ||
@@ -276,11 +282,15 @@ int validarData(char strData[TAM_DATA], Data* data){
 	return 0;
 }
 
-int anoAtual(){
+Data dataAtual(){
+	Data data;
 	time_t mytime;
     mytime = time(NULL);
     struct tm tm = *localtime(&mytime);
-    return tm.tm_year + 1900;
+    data.dia = tm.tm_mday;
+    data.mes = tm.tm_mon + 1;
+    data.ano = tm.tm_year + 1900;
+    return data;
 }
 
 void removerQuebraDeLinha(char string[], int tamanho){
