@@ -50,21 +50,7 @@ int main(void){
 								printf("Cadastro Realizado com Sucesso\n");
 								qtd_aluno++;
 							}else{
-								switch(retornoAluno){
-									case ERRO_CADASTRO_MATRICULA:{
-										printf("Matricula Invalida\n");
-										break;
-									}
-									case ERRO_CADASTRO_SEXO:{
-										printf("Sexo Invalido\n");
-										break;
-									}
-									default:{
-										printf("Erro Desconhecido\n");
-										break;
-									}
-								}
-								printf("Nao foi possivel fazer o Cadastro\n");
+								printarMensagemDeErro_Pessoa(retornoAluno);
 							}
 							break;
 						}
@@ -104,21 +90,7 @@ int main(void){
 								printf("Cadastro Realizado com Sucesso\n");
 								qtd_professor++;
 							}else{
-								switch(retornoProfessor){
-									case ERRO_CADASTRO_MATRICULA:{
-										printf("Matricula Invalida\n");
-										break;
-									}
-									case ERRO_CADASTRO_SEXO:{
-										printf("Sexo Invalido\n");
-										break;
-									}
-									default:{
-										printf("Erro Desconhecido\n");
-										break;
-									}
-								}
-								printf("Nao foi possivel fazer o Cadastro\n");
+								printarMensagemDeErro_Pessoa(retornoProfessor);
 							}
 							break;
 						}

@@ -50,16 +50,36 @@ int inserir_Pessoa(Pessoa lista[], int qtd){
 	lista[qtd].data_nascimento.mes = idade % 1000000 / 10000;
 	lista[qtd].data_nascimento.ano = idade % 1000000 % 10000;
 
-	printf("\nDigite CPF\n");
-	fgets(lista[qtd].cpf, 15, stdin);
-
-	ln = strlen(lista[qtd].cpf) - 1;
-	if(lista[qtd].cpf[ln] = '\n')
-		lista[qtd].cpf[ln] = '\0';
+	printf("\nDigite o CPF no formato 999.999.999-99\n");
+	fgets(lista[qtd].cpf, TAM_CPF, stdin);
+	if(validarCPF(lista[qtd].cpf) == 0)
+		return ERRO_CADASTRO_CPF;
 
 	printf("\n");
 
 	return SUCESSO_CADASTRO;
+}
+
+void printarMensagemDeErro_Pessoa(int codigo){
+	printf("Nao foi possivel fazer o Cadastro. Erro: ");
+	switch(codigo){
+		case ERRO_CADASTRO_MATRICULA:{
+			printf("Matricula Invalida\n");
+			break;
+		}
+		case ERRO_CADASTRO_SEXO:{
+			printf("Sexo Invalido\n");
+			break;
+		}
+		case ERRO_CADASTRO_CPF:{
+			printf("CPF Invalido\n");
+			break;
+		}
+		default:{
+			printf("Erro Desconhecido\n");
+			break;
+		}
+	}
 }
 
 void listar_Pessoa(Pessoa lista[], int qtd, char sexo){
@@ -91,4 +111,56 @@ void ordenarListaPorNome(Pessoa lista[], int max){
             }
         }
     }
+}
+
+int validarCPF(char string[TAM_CPF]){
+	char cpf[11];
+	strcpy(cpf, string);
+    removerChar(cpf, TAM_CPF, '-');
+    removerChar(cpf, TAM_CPF, '.');
+    
+    int i, j, continua = 1;
+    
+    for(j = 1; j <= 10; j++)
+        if(cpf[j - 1] == cpf[j])
+            continua = 0;
+        else
+            continua = 1;
+    
+    if(continua == 0)
+        return 0;
+    
+    int soma = 0;
+    for(i = 10, j = 0; i >= 2; i--, j++)
+        soma += (cpf[j] - '0') * i;
+    
+    int verificador = (soma * 10) % 11;
+    
+    if(verificador == 10)
+        verificador = 0;
+    
+    if(verificador != (cpf[9] - '0'))
+        return 0;
+    
+    soma = 0;
+    for(i = 11, j = 0; i >= 2; i--, j++)
+        soma += (cpf[j] - '0') * i;
+    
+    verificador = (soma * 10) % 11;
+    
+    if(verificador == 10)
+        verificador = 0;
+    
+    
+    return verificador == (cpf[10] - '0');
+}
+
+void removerChar(char string[], int tamanho, char remover){
+	int i, j;
+	for(i = j = 0; j < tamanho; i++, j++){
+		if(string[j] == remover)
+			j++;
+		string[i] = string[j];
+	}
+	string[i + 1] = '\0';
 }
