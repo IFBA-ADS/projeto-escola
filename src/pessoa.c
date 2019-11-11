@@ -27,7 +27,8 @@ int menuListar_Pessoa(){
 	printf("\n");
 	printf("1 - Ordenado por nome\n");
 	printf("2 - Ordenado por data de nascimento\n");
-	printf("3 - Filtrar por sexo\n\n");
+	printf("3 - Filtrar por sexo\n");
+	printf("4 - Filtrar por nome\n\n");
 
 	printf("Digite a sua opcao\n");
 	scanf("%d",&opcao);
@@ -108,7 +109,7 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
 	switch(opcao){
 		case 1: {
 			printf("%s", cabecalho);
-			listar_Pessoa(lista, qtd, '-');
+			listar_Pessoa(lista, qtd, '-', "---");
 			break;
 		}
 		case 2: {
@@ -123,10 +124,21 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
 			sexo = toupper(sexo);
 			if(sexo == 'M' || sexo == 'F'){
 				printf("%s", cabecalho);
-				listar_Pessoa(lista, qtd, sexo);
+				listar_Pessoa(lista, qtd, sexo, "---");
 			}else{
 				printf("Sexo Invalido\n");
 			}
+			break;
+		}
+		case 4: {
+			char busca[TAM_NOME];
+			do{
+				printf("Digite o termo de busca\n");
+				fgets(busca, TAM_NOME, stdin);
+				if(strlen(busca) < 3)
+					printf("Minimo de 3 caracteres\n");
+			}while(strlen(busca) < 3);
+			listar_Pessoa(lista, qtd, '-', busca);
 			break;
 		}
 		default: {
@@ -136,13 +148,14 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
 	}
 }
 
-void listar_Pessoa(Pessoa lista[], int qtd, char sexo){
+void listar_Pessoa(Pessoa lista[], int qtd, char sexo, char busca[3]){
 	int i;
 
 	ordenarListaPorNome(lista, qtd);
 
 	for(i = 0; i < qtd; i++){
-		if(sexo == '-' || lista[i].sexo == toupper(sexo)){
+		//TODO: verificar se essa condicional esta correta
+		if((sexo == '-' || lista[i].sexo == toupper(sexo) && (strcmp(busca, "---") == 0 || strstr(lista[i].nome, busca) - lista[i].nome >= 0))){
 			printf("------\n");
 			printf("Matricula: %d\n", lista[i].matricula);
 			printf("Nome: %s\n", lista[i].nome);

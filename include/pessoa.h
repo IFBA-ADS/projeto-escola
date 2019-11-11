@@ -9,6 +9,7 @@
 
 #define TAM_CPF 15
 #define TAM_DATA 11
+#define TAM_NOME 11
 
 typedef struct dma{
 	int dia;
@@ -19,7 +20,7 @@ typedef struct dma{
 typedef struct pessoa{
 	int matricula;
 	Data data_nascimento;
-	char nome[100];
+	char nome[TAM_NOME];
 	char cpf[TAM_CPF];
 	char sexo;
 } Pessoa;
@@ -34,7 +35,7 @@ int inserir_Pessoa(Pessoa lista[], int qtd);
 
 void printarMensagemDeErro_Pessoa(int codigo);
 
-void listar_Pessoa(Pessoa lista[], int qtd, char sexo);
+void listar_Pessoa(Pessoa lista[], int qtd, char sexo, char busca[3]);
 
 void ordenarListaPorNome(Pessoa lista[], int max);
 
