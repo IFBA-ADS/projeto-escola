@@ -44,19 +44,22 @@ int main(void){
 					
 					switch(opcaoAluno){
 						case 1:{
-
-							retornoAluno = inserir_Pessoa(lista_aluno, qtd_aluno);
-							if(retornoAluno == SUCESSO_CADASTRO){
-								printf("Cadastro Realizado com Sucesso\n");
-								qtd_aluno++;
-							}else{
-								printarMensagemDeErro_Pessoa(retornoAluno);
+							if(qtd_aluno + 1 <= TAM_LISTA_ALUNO){
+								retornoAluno = inserir_Pessoa(lista_aluno, qtd_aluno);
+								if(retornoAluno == SUCESSO_CADASTRO){
+									printf("Cadastro Realizado com Sucesso\n");
+									qtd_aluno++;
+								}else{
+									printarMensagemDeErro_Pessoa(retornoAluno);
+								}
+							}
+							else{
+								printf("Limite de alunos alcançado\n");
 							}
 							break;
 						}
 						case 2:{
-							printf("\n#### Alunos Cadastrados ###\n\n");
-							listar_Pessoa(lista_aluno, qtd_aluno, '-');
+							gerenciarListagem_Pessoa(lista_aluno, qtd_aluno, "\n#### Alunos Cadastrados ###\n\n");
 							break;
 						}
 						case 5:{
@@ -84,19 +87,22 @@ int main(void){
 
 					switch(opcaoProfessor){
 						case 1:{
-
-							retornoProfessor = inserir_Pessoa(lista_professor, qtd_professor);
-							if(retornoProfessor == SUCESSO_CADASTRO){
-								printf("Cadastro Realizado com Sucesso\n");
-								qtd_professor++;
-							}else{
-								printarMensagemDeErro_Pessoa(retornoProfessor);
+							if(qtd_professor + 1 <= TAM_LISTA_PROFESSOR){
+								retornoProfessor = inserir_Pessoa(lista_professor, qtd_professor);
+								if(retornoProfessor == SUCESSO_CADASTRO){
+									printf("Cadastro Realizado com Sucesso\n");
+									qtd_professor++;
+								}else{
+									printarMensagemDeErro_Pessoa(retornoProfessor);
+								}
+							}
+							else{
+								printf("Limite de professores alcançado\n");
 							}
 							break;
 						}
 						case 2:{
-							printf("\n#### Professores Cadastrados ###\n\n");
-							listar_Pessoa(lista_professor, qtd_professor, '-');
+							gerenciarListagem_Pessoa(lista_professor, qtd_professor, "\n#### Professores Cadastrados ###\n\n");
 							break;
 						}
 						case 5:{

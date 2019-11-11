@@ -24,6 +24,10 @@ typedef struct pessoa{
 
 int menu_Pessoa();
 
+int menuListar_Pessoa();
+
+void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]);
+
 int inserir_Pessoa(Pessoa lista[], int qtd);
 
 void printarMensagemDeErro_Pessoa(int codigo);

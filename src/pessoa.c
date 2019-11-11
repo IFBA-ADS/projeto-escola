@@ -19,6 +19,22 @@ int menu_Pessoa(){
 	return opcao;
 }
 
+int menuListar_Pessoa(){
+
+	int opcao;
+
+	printf("\n");
+	printf("1 - Ordenado por nome\n");
+	printf("2 - Ordenado por data de nascimento\n");
+	printf("3 - Filtrar por sexo\n\n");
+
+	printf("Digite a sua opcao\n");
+	scanf("%d",&opcao);
+	fflush(stdin);
+
+	return opcao;
+}
+
 int inserir_Pessoa(Pessoa lista[], int qtd){
 
 	printf("Digite a Matricula\n");
@@ -45,6 +61,7 @@ int inserir_Pessoa(Pessoa lista[], int qtd){
 	printf("\nDigite a Idade no formato xx/xx/xxxx\n");
 	scanf("%d", &idade);
 	getchar();
+	fflush(stdin);
 
 	lista[qtd].data_nascimento.dia = idade / 1000000;
 	lista[qtd].data_nascimento.mes = idade % 1000000 / 10000;
@@ -82,18 +99,53 @@ void printarMensagemDeErro_Pessoa(int codigo){
 	}
 }
 
+void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
+	int opcao = menuListar_Pessoa();
+	switch(opcao){
+		case 1: {
+			printf("%s", cabecalho);
+			listar_Pessoa(lista, qtd, '-');
+			break;
+		}
+		case 2: {
+			printf("Nao implementado\n\n");
+			break;
+		}
+		case 3: {
+			printf("Digite o sexo pelo qual deseja filtrar [m/f]\n");
+			char sexo;
+			scanf("%1c", &sexo);
+
+			sexo = toupper(sexo);
+			if(sexo == 'M' || sexo == 'F'){
+				printf("%s", cabecalho);
+				listar_Pessoa(lista, qtd, sexo);
+			}else{
+				printf("Sexo Invalido\n");
+			}
+			break;
+		}
+		default: {
+			printf("\nOpcao Invalida\n");
+			break;
+		}
+	}
+}
+
 void listar_Pessoa(Pessoa lista[], int qtd, char sexo){
 	int i;
 
 	ordenarListaPorNome(lista, qtd);
 
 	for(i = 0; i < qtd; i++){
-		printf("------\n");
-		printf("Matricula: %d\n", lista[i].matricula);
-		printf("Nome: %s\n", lista[i].nome);
-		printf("Sexo: %c\n", lista[i].sexo);
-		printf("Data de Nascimento %d/%d/%d\n", lista[i].data_nascimento.dia, lista[i].data_nascimento.mes, lista[i].data_nascimento.ano);
-		printf("CPF: %s\n", lista[i].cpf);
+		if(sexo == '-' || lista[i].sexo == toupper(sexo)){
+			printf("------\n");
+			printf("Matricula: %d\n", lista[i].matricula);
+			printf("Nome: %s\n", lista[i].nome);
+			printf("Sexo: %c\n", lista[i].sexo);
+			printf("Data de Nascimento %d/%d/%d\n", lista[i].data_nascimento.dia, lista[i].data_nascimento.mes, lista[i].data_nascimento.ano);
+			printf("CPF: %s\n", lista[i].cpf);
+		}
 	}
 
 	printf("------\n\n");
