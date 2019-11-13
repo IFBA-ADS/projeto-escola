@@ -28,13 +28,13 @@ Vou tentar descrever quais e funções acho que precisaremos.
 		Listar Alunos por sexo (Masculino/Feminino)
 		Listar Professores por sexo (Masculino/Feminino)
 
-- 5ª função: listagem de pessoal por nascimento. Recebe apenas 1 parâmetro: tipo de pesssoa;
+- 5ª função: listagem de pessoal por nascimento. Recebe apenas 1 parâmetro: tipo de pesssoa; ![#ff9600](https://placehold.it/15/ff9600/000000?text=+)
 	#### Atende aos relatórios
 		Listar Alunos ordenados por data de nascimento
 		Listar Professores ordenados por data de nascimento
 
-- 6ª função: listagem de disciplinas. Recebe apenas 1 parâmetro: o nome da disciplina; ![#c5f015](https://placehold.it/15/c5f015/000000?text=+)
-	#### Atende aos relatórios 
+- 6ª função: listagem de disciplinas. Recebe apenas 1 parâmetro: o nome da disciplina; ![#ff9600](https://placehold.it/15/ff9600/000000?text=+)
+	#### Atende aos relatórios ![#c5f015](https://placehold.it/15/c5f015/000000?text=+)
 		Listar Disciplinas (dados da disciplina sem os alunos)
 
 - 7ª função: Listagem de matriculados. Recebe apenas 1 parâmetro: nome da disciplina;
