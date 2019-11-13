@@ -41,12 +41,12 @@ Vou tentar descrever quais e funções acho que precisaremos.
 	#### Atende aos relatórios
 		Listar uma disciplina (dados da disciplina e os alunos matriculados)
 
-- 8ª função: aniversariantes do mês. Não recebe parâmetros. Usa alguma função em C para pegar a data que estamos e verifica com o cadastro);
-	#### Atende aos relatórios ![#ff9600](https://placehold.it/15/ff9600/000000?text=+)
+- 8ª função: aniversariantes do mês. Não recebe parâmetros. Usa alguma função em C para pegar a data que estamos e verifica com o cadastro); ![#ff9600](https://placehold.it/15/ff9600/000000?text=+)
+	#### Atende aos relatórios 
 		Aniversariantes do mês
 
-- 9ª função: busca. Recebe 2 parâmetros: string de busca e tipo de pesssoa;
-	#### Atende aos relatórios ![#c5f015](https://placehold.it/15/c5f015/000000?text=+)
+- 9ª função: busca. Recebe 2 parâmetros: string de busca e tipo de pesssoa; ![#c5f015](https://placehold.it/15/c5f015/000000?text=+)
+	#### Atende aos relatórios
 		Pesquisar aluno por nome (min. 3 letras)
 		Pesquisar professor por nome (min. 3 letras)
 
