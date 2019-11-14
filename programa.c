@@ -12,7 +12,7 @@
 
 int menu_Principal();
 
-int main(void){
+void main(){
 	Pessoa lista_aluno[TAM_LISTA_ALUNO];
 	Pessoa lista_professor[TAM_LISTA_PROFESSOR];
 	Disciplina lista_disciplina[TAM_DISCIPLINA];
@@ -63,7 +63,7 @@ int main(void){
 							break;
 						}
 						case 5:{
-							printf("\033[2J"); // Funciona Melhor que o System ("Clear"). 
+							printf("\e[H\e[2J"); // Funciona Melhor que o System ("Clear"). 
 							voltarAluno = 1;
 							break;
 						}

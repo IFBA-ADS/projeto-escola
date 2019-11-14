@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include <time.h>
 
 #include "../include/pessoa.h"
@@ -15,7 +16,9 @@ int menu_Pessoa(){
 	printf("5 - Voltar\n\n");
 
 	printf("Digite a sua opcao\n");
+	getchar(); // Para ele não pular linha.
 	scanf("%d",&opcao);
+
 
 	return opcao;
 }
@@ -33,7 +36,6 @@ int menuListar_Pessoa(){
 
 	printf("Digite a sua opcao\n");
 	scanf("%d",&opcao);
-	fflush(stdin);
 
 	return opcao;
 }
@@ -42,41 +44,42 @@ int inserir_Pessoa(Pessoa lista[], int qtd){
 
 	printf("\nDigite a Matricula\n");
 	scanf("%d", &lista[qtd].matricula);
-	fflush(stdin);
+	getchar(); //Funciona melhor no Linux do que fflush(stdin)
+	
 	if (lista[qtd].matricula <= 0)
 		return ERRO_CADASTRO_MATRICULA;
 
 	printf("\nDigite o Nome\n");
 	fgets(lista[qtd].nome, TAM_NOME, stdin);
-	fflush(stdin);
 
 	removerQuebraDeLinha(lista[qtd].nome, strlen(lista[qtd].nome));
 
 	printf("\nDigite o Sexo\n");
-	scanf("%1c", &lista[qtd].sexo);
-	fflush(stdin);
-
+	scanf("%c", &lista[qtd].sexo);
+	
 	lista[qtd].sexo = toupper(lista[qtd].sexo); //Converte Minuscula para Maiuscula
 	if(lista[qtd].sexo != 'M' && lista[qtd].sexo != 'F')
 		return ERRO_CADASTRO_SEXO;
 	
 	char nascimento[TAM_DATA];
+
 	printf("\nDigite a data de nascimento no formato 99/99/9999\n");
 	fgets(nascimento, TAM_DATA, stdin);
-	fflush(stdin);
+	getchar();
+	
 
-	if(validarData(nascimento, &lista[qtd].data_nascimento) == 0)
+/*	if(validarData(nascimento, &lista[qtd].data_nascimento) == 0) Está dando algum erro na Funcao Validar Data.
 		return ERRO_CADASTRO_DATA;
-
+		*/
 	printf("\nDigite o CPF no formato 999.999.999-99\n");
 	fgets(lista[qtd].cpf, TAM_CPF, stdin);
-	fflush(stdin);
+	getchar();
+
 	if(validarCPF(lista[qtd].cpf) == 0)
 		return ERRO_CADASTRO_CPF;
 
-	printf("\n");
-
 	return SUCESSO_CADASTRO;
+
 }
 
 void printarMensagemDeErro_Pessoa(int codigo){
@@ -179,7 +182,7 @@ void ordenarListaPorNome(Pessoa lista[], int max){
     int k, j;
     for (k = 0; k < max - 1; k++) {
         for (j = 0; j < max - k - 1; j++) {
-            if (stricmp(lista[j].nome, lista[j + 1].nome) > 0) {
+            if (strcmp(lista[j].nome, lista[j + 1].nome) > 0) {
                 aux = lista[j];
                 lista[j] = lista[j + 1];
                 lista[j + 1] = aux;
