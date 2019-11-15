@@ -7,15 +7,7 @@
 #define ERRO_CADASTRO_CPF 4
 #define ERRO_CADASTRO_DATA 5
 
-#define TAM_CPF 15
-#define TAM_DATA 11
 #define TAM_NOME 100
-
-typedef struct dma{
-	int dia;
-	int mes;
-	int ano;
-} Data;
 
 typedef struct pessoa{
 	int matricula;
@@ -29,24 +21,18 @@ int menu_Pessoa();
 
 int menuListar_Pessoa();
 
-void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]);
+void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50]);
 
-int inserir_Pessoa(Pessoa lista[], int qtd);
+int inserir_Pessoa(Pessoa lista[], int quantidade);
 
 void printarMensagemDeErro_Pessoa(int codigo);
 
-void listar_Pessoa(Pessoa lista[], int qtd, char sexo, char busca[TAM_NOME]);
+void listar_Pessoa(Pessoa lista[], int quantidade);
 
 void ordenarListaPorNome(Pessoa lista[], int max);
 
-int validarCPF(char string[TAM_CPF]);
+int filtrarPorSexo(Pessoa listaIn[], int quantidadeIn, char sexo, Pessoa listaOut[]);
 
-void removerChar(char string[], int tamanho, char remover);
-
-int validarData(char strData[TAM_DATA], Data* data);
-
-Data dataAtual();
-
-void removerQuebraDeLinha(char string[], int tamanho);
+int filtrarPorNome(Pessoa listaIn[], int quantidadeIn, char busca[TAM_NOME], Pessoa listaOut[]);
 
 #endif

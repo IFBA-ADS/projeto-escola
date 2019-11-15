@@ -2,13 +2,15 @@
 #include <string.h>
 #include <ctype.h>
 
+#define TAM_LISTA_PESSOA 5
+
+#include "src/util.c"
 #include "src/pessoa.c"
 #include "src/disciplina.c"
 
-
-#define TAM_LISTA_PROFESSOR 5
-#define TAM_LISTA_ALUNO 5
-#define TAM_DISCIPLINA 5
+#define TAM_LISTA_PROFESSOR TAM_LISTA_PESSOA
+#define TAM_LISTA_ALUNO TAM_LISTA_PESSOA
+#define TAM_DISCIPLINA TAM_LISTA_PESSOA
 
 int menu_Principal();
 
@@ -47,14 +49,14 @@ void main(){
 							if(qtd_aluno + 1 <= TAM_LISTA_ALUNO){
 								retornoAluno = inserir_Pessoa(lista_aluno, qtd_aluno);
 								if(retornoAluno == SUCESSO_CADASTRO){
-									printf("Cadastro Realizado com Sucesso\n");
+									printf("\nCadastro Realizado com Sucesso\n");
 									qtd_aluno++;
 								}else{
 									printarMensagemDeErro_Pessoa(retornoAluno);
 								}
 							}
 							else{
-								printf("Limite de alunos alcançado\n");
+								printf("\nLimite de alunos alcançado\n");
 							}
 							break;
 						}
@@ -62,8 +64,12 @@ void main(){
 							gerenciarListagem_Pessoa(lista_aluno, qtd_aluno, "\n#### Alunos Cadastrados ###\n\n");
 							break;
 						}
-						case 5:{
-							printf("\e[H\e[2J"); // Funciona Melhor que o System ("Clear"). 
+						case 3:{
+							printf("\nNao implementado\n\n");
+							break;
+						}
+						case 4:{
+							printf("\e[H\e[2J");
 							voltarAluno = 1;
 							break;
 						}
@@ -90,14 +96,14 @@ void main(){
 							if(qtd_professor + 1 <= TAM_LISTA_PROFESSOR){
 								retornoProfessor = inserir_Pessoa(lista_professor, qtd_professor);
 								if(retornoProfessor == SUCESSO_CADASTRO){
-									printf("Cadastro Realizado com Sucesso\n");
+									printf("\nCadastro Realizado com Sucesso\n");
 									qtd_professor++;
 								}else{
 									printarMensagemDeErro_Pessoa(retornoProfessor);
 								}
 							}
 							else{
-								printf("Limite de professores alcançado\n");
+								printf("\nLimite de professores alcançado\n");
 							}
 							break;
 						}
@@ -105,8 +111,12 @@ void main(){
 							gerenciarListagem_Pessoa(lista_professor, qtd_professor, "\n#### Professores Cadastrados ###\n\n");
 							break;
 						}
-						case 5:{
-							printf("\e[H\e[2J"); // Funciona Melhor que o System ("Clear"). 
+						case 3:{
+							printf("\nNao implementado\n\n");
+							break;
+						}
+						case 4:{
+							printf("\e[H\e[2J");
 							voltarProfessor = 1;
 							break;
 						}
@@ -163,7 +173,7 @@ void main(){
 							break;
 						}
 						case 5:{
-							printf("\e[H\e[2J"); // Funciona Melhor que o System ("Clear"). 
+							printf("\e[H\e[2J");
 							voltarDisciplina = 1;
 							break;
 						}

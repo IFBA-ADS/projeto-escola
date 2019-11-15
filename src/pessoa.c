@@ -11,14 +11,11 @@ int menu_Pessoa(){
 
 	printf("1 - Cadastrar\n");
 	printf("2 - Listar\n");
-	printf("3 - Consultar\n");
-	printf("4 - Apagar\n");
-	printf("5 - Voltar\n\n");
+	printf("3 - Apagar\n");
+	printf("4 - Voltar\n\n");
 
 	printf("Digite a sua opcao\n");
-	getchar(); // Para ele não pular linha.
-	scanf("%d",&opcao);
-
+	scanf("%d%*c",&opcao);
 
 	return opcao;
 }
@@ -35,51 +32,44 @@ int menuListar_Pessoa(){
 	printf("5 - Aniversariantes do mes\n\n");
 
 	printf("Digite a sua opcao\n");
-	scanf("%d",&opcao);
+	scanf("%1d%*c",&opcao);
 
 	return opcao;
 }
 
-int inserir_Pessoa(Pessoa lista[], int qtd){
+int inserir_Pessoa(Pessoa lista[], int quantidade){
 
 	printf("\nDigite a Matricula\n");
-	scanf("%d", &lista[qtd].matricula);
-	getchar(); //Funciona melhor no Linux do que fflush(stdin)
+	scanf("%d%*c", &lista[quantidade].matricula);
 	
-	if (lista[qtd].matricula <= 0)
+	if (lista[quantidade].matricula <= 0)
 		return ERRO_CADASTRO_MATRICULA;
 
 	printf("\nDigite o Nome\n");
-	fgets(lista[qtd].nome, TAM_NOME, stdin);
+	cfgets(lista[quantidade].nome, TAM_NOME, stdin);
 
-	removerQuebraDeLinha(lista[qtd].nome, strlen(lista[qtd].nome));
-
-	printf("\nDigite o Sexo\n");
-	scanf("%c", &lista[qtd].sexo);
+	printf("\nDigite o Sexo [M/F]\n");
+	scanf("%c%*c", &lista[quantidade].sexo);
 	
-	lista[qtd].sexo = toupper(lista[qtd].sexo); //Converte Minuscula para Maiuscula
-	if(lista[qtd].sexo != 'M' && lista[qtd].sexo != 'F')
+	lista[quantidade].sexo = toupper(lista[quantidade].sexo);
+	if(lista[quantidade].sexo != 'M' && lista[quantidade].sexo != 'F')
 		return ERRO_CADASTRO_SEXO;
 	
 	char nascimento[TAM_DATA];
 
 	printf("\nDigite a data de nascimento no formato 99/99/9999\n");
-	fgets(nascimento, TAM_DATA, stdin);
-	getchar();
-	
+	cfgets(nascimento, TAM_DATA, stdin);
 
-/*	if(validarData(nascimento, &lista[qtd].data_nascimento) == 0) Está dando algum erro na Funcao Validar Data.
+	if(validarData(nascimento, strlen(nascimento), &lista[quantidade].data_nascimento) == 0)
 		return ERRO_CADASTRO_DATA;
-		*/
-	printf("\nDigite o CPF no formato 999.999.999-99\n");
-	fgets(lista[qtd].cpf, TAM_CPF, stdin);
-	getchar();
 
-	if(validarCPF(lista[qtd].cpf) == 0)
-		return ERRO_CADASTRO_CPF;
+	printf("\nDigite o CPF no formato 999.999.999-99\n");
+	cfgets(lista[quantidade].cpf, TAM_CPF, stdin);
+
+	if(validarCPF(lista[quantidade].cpf, strlen(lista[quantidade].cpf)) == 0)
+	 	return ERRO_CADASTRO_CPF;
 
 	return SUCESSO_CADASTRO;
-
 }
 
 void printarMensagemDeErro_Pessoa(int codigo){
@@ -108,12 +98,12 @@ void printarMensagemDeErro_Pessoa(int codigo){
 	}
 }
 
-void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
+void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50]){
 	int opcao = menuListar_Pessoa();
 	switch(opcao){
 		case 1: {
 			printf("%s", cabecalho);
-			listar_Pessoa(lista, qtd, '-', "---");
+			listar_Pessoa(lista, quantidade);
 			break;
 		}
 		case 2: {
@@ -123,12 +113,13 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
 		case 3: {
 			printf("\nDigite o sexo pelo qual deseja filtrar [m/f]\n");
 			char sexo;
-			scanf("%1c", &sexo);
-
+			scanf("%1c%*c", &sexo);
 			sexo = toupper(sexo);
 			if(sexo == 'M' || sexo == 'F'){
 				printf("%s", cabecalho);
-				listar_Pessoa(lista, qtd, sexo, "---");
+				Pessoa listaFiltrada[TAM_LISTA_PESSOA];
+				int total = filtrarPorSexo(lista, quantidade, sexo, listaFiltrada);
+				listar_Pessoa(listaFiltrada, total);
 			}else{
 				printf("Sexo Invalido\n");
 			}
@@ -139,12 +130,14 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
 			int tamanhoBusca;
 			do{
 				printf("\nDigite o termo de busca\n");
-				fgets(busca, TAM_NOME, stdin);
-				removerQuebraDeLinha(busca, strlen(busca));
+				cfgets(busca, TAM_NOME, stdin);
 				if(strlen(busca) < 3)
 					printf("Minimo de 3 caracteres\n");
 			}while(strlen(busca) < 3);
-			listar_Pessoa(lista, qtd, '-', busca);
+			printf("%s", cabecalho);
+			Pessoa listaFiltrada[TAM_LISTA_PESSOA];
+			int total = filtrarPorNome(lista, quantidade, busca, listaFiltrada);
+			listar_Pessoa(listaFiltrada, total);
 			break;
 		}
 		case 5: {
@@ -158,23 +151,25 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int qtd, char cabecalho[50]){
 	}
 }
 
-void listar_Pessoa(Pessoa lista[], int qtd, char sexo, char busca[TAM_NOME]){
-	int i;
-
-	ordenarListaPorNome(lista, qtd);
-
-	for(i = 0; i < qtd; i++){
-		if((sexo == '-' || lista[i].sexo == toupper(sexo)) && (strcmp(busca, "---") == 0 || strstr(lista[i].nome, busca) - lista[i].nome >= 0)){
+void listar_Pessoa(Pessoa lista[], int quantidade){
+	if(quantidade > 0){
+		int i;
+		ordenarListaPorNome(lista, quantidade);
+		for(i = 0; i < quantidade; i++){
 			printf("------\n");
 			printf("Matricula: %d\n", lista[i].matricula);
 			printf("Nome: %s\n", lista[i].nome);
 			printf("Sexo: %c\n", lista[i].sexo);
 			printf("Data de Nascimento %d/%d/%d\n", lista[i].data_nascimento.dia, lista[i].data_nascimento.mes, lista[i].data_nascimento.ano);
 			printf("CPF: %s\n", lista[i].cpf);
+			printf("------\n");
 		}
+	}else{
+		printf("\n-------------------------\n");
+		printf("Nenum registro encontrado");
+		printf("\n-------------------------\n");
 	}
-
-	printf("------\n\n");
+	printf("\n");
 }
 
 void ordenarListaPorNome(Pessoa lista[], int max){
@@ -191,112 +186,24 @@ void ordenarListaPorNome(Pessoa lista[], int max){
     }
 }
 
-int validarCPF(char string[TAM_CPF]){
-	char cpf[11];
-	strcpy(cpf, string);
-    removerChar(cpf, TAM_CPF, '-');
-    removerChar(cpf, TAM_CPF, '.');
-    
-    int i, j, continua = 1;
-    
-    for(j = 1; j <= 10; j++)
-        if(cpf[j - 1] == cpf[j])
-            continua = 0;
-        else
-            continua = 1;
-    
-    if(continua == 0)
-        return 0;
-    
-    int soma = 0;
-    for(i = 10, j = 0; i >= 2; i--, j++)
-        soma += (cpf[j] - '0') * i;
-    
-    int verificador = (soma * 10) % 11;
-    
-    if(verificador == 10)
-        verificador = 0;
-    
-    if(verificador != (cpf[9] - '0'))
-        return 0;
-    
-    soma = 0;
-    for(i = 11, j = 0; i >= 2; i--, j++)
-        soma += (cpf[j] - '0') * i;
-    
-    verificador = (soma * 10) % 11;
-    
-    if(verificador == 10)
-        verificador = 0;
-    
-    
-    return verificador == (cpf[10] - '0');
-}
-
-void removerChar(char string[], int tamanho, char remover){
-	int i, j;
-	for(i = j = 0; j < tamanho; i++, j++){
-		if(string[j] == remover)
-			j++;
-		string[i] = string[j];
+int filtrarPorSexo(Pessoa listaIn[], int quantidadeIn, char sexo, Pessoa listaOut[]){
+	int i, outI;
+	for(i = 0, outI = 0; i < quantidadeIn; i++){
+		if(sexo == '-' || listaIn[i].sexo == toupper(sexo)){
+			listaOut[outI] = listaIn[i];
+			outI++;
+		}
 	}
-	string[i + 1] = '\0';
+	return outI;
 }
 
-int validarData(char strData[TAM_DATA], Data* data){
-	int tamanhoCompactado = 8;
-	char nascimento[TAM_DATA];
-	strcpy(nascimento, strData);
-	removerChar(nascimento, TAM_DATA, '/');
-	if(strlen(nascimento) != tamanhoCompactado)
-		return 0;
-
-	int i, valido = 1;
-	for(i = 0; i < tamanhoCompactado && valido == 1; i++)
-		if(nascimento[i] < 48 || nascimento[i] > 57)
-			valido = 0;
-	
-	if(valido == 0)
-		return valido;
-
-	int dia, mes, ano;
-	dia = ((nascimento[0] - '0') * 10) + (nascimento[1] - '0');
-	mes = ((nascimento[2] - '0') * 10) + (nascimento[3] - '0');
-	if(mes < 1 || mes > 12)
-		return 0;
-	
-	ano = ((nascimento[4] - '0') * 1000) + ((nascimento[5] - '0') * 100) + ((nascimento[6] - '0') * 10) + (nascimento[7] - '0');
-	Data dataA = dataAtual();
-	if(ano < 1900 || ano > dataA.ano)
-		return 0;
-
-	if (((dia >= 1 && dia <= 31) && (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12)) ||
-		(dia == 29 && mes == 2 && (ano % 400 == 0 || (ano % 4 == 0 && ano % 100 != 0))) ||
-		((dia >= 1 && dia <= 30) && (mes == 4 || mes == 6 || mes == 9 || mes == 11)) ||
-		((dia >= 1 && dia <= 28) && (mes == 2))){
-
-		data->dia = dia;
-		data->mes = mes;
-		data->ano = ano;
-
-		return 1;
+int filtrarPorNome(Pessoa listaIn[], int quantidadeIn, char busca[TAM_NOME], Pessoa listaOut[]){
+	int i, outI;
+	for(i = 0, outI = 0; i < quantidadeIn; i++){
+		if(strcmp(busca, "---") == 0 || compararStrings(listaIn[i].nome, busca)){
+			listaOut[outI] = listaIn[i];
+			outI++;
+		}
 	}
-
-	return 0;
-}
-
-Data dataAtual(){
-	Data data;
-	time_t mytime;
-    mytime = time(NULL);
-    struct tm tm = *localtime(&mytime);
-    data.dia = tm.tm_mday;
-    data.mes = tm.tm_mon + 1;
-    data.ano = tm.tm_year + 1900;
-    return data;
-}
-
-void removerQuebraDeLinha(char string[], int tamanho){
-	if(string[tamanho - 1] == '\n')
-		string[tamanho - 1] = '\0';
+	return outI;
 }
