@@ -140,8 +140,7 @@ void cfgets(char* string, int tamanho, FILE* fluxo){
 		limpaBuffer();
 }
 
-void limpaBuffer()
-{
+void limpaBuffer(){
 	char c;
 	while ((c = getchar()) != '\n' && c != EOF);
 }
@@ -162,4 +161,12 @@ int compararStrings(const char* string, const char* substring){
         	return 1;
     }
     return 0;
+}
+
+void limparTela(){
+	#ifdef WIN32
+		system ("cls");
+	#else
+		printf("\e[H\e[2J");
+	#endif
 }

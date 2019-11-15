@@ -28,4 +28,6 @@ void limpaBuffer();
 
 int compararStrings(const char* string, const char* substring);
 
+void limparTela();
+
 #endif

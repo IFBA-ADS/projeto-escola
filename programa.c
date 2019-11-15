@@ -69,7 +69,7 @@ void main(){
 							break;
 						}
 						case 4:{
-							printf("\e[H\e[2J");
+							limparTela();
 							voltarAluno = 1;
 							break;
 						}
@@ -116,7 +116,7 @@ void main(){
 							break;
 						}
 						case 4:{
-							printf("\e[H\e[2J");
+							limparTela();
 							voltarProfessor = 1;
 							break;
 						}
@@ -173,7 +173,7 @@ void main(){
 							break;
 						}
 						case 5:{
-							printf("\e[H\e[2J");
+							limparTela();
 							voltarDisciplina = 1;
 							break;
 						}

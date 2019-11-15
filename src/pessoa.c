@@ -32,13 +32,12 @@ int menuListar_Pessoa(){
 	printf("5 - Aniversariantes do mes\n\n");
 
 	printf("Digite a sua opcao\n");
-	scanf("%1d%*c",&opcao);
+	scanf("%d%*c",&opcao);
 
 	return opcao;
 }
 
 int inserir_Pessoa(Pessoa lista[], int quantidade){
-
 	printf("\nDigite a Matricula\n");
 	scanf("%d%*c", &lista[quantidade].matricula);
 	
@@ -49,7 +48,8 @@ int inserir_Pessoa(Pessoa lista[], int quantidade){
 	cfgets(lista[quantidade].nome, TAM_NOME, stdin);
 
 	printf("\nDigite o Sexo [M/F]\n");
-	scanf("%c%*c", &lista[quantidade].sexo);
+	scanf("%c", &lista[quantidade].sexo);
+	limpaBuffer();
 	
 	lista[quantidade].sexo = toupper(lista[quantidade].sexo);
 	if(lista[quantidade].sexo != 'M' && lista[quantidade].sexo != 'F')
@@ -113,7 +113,8 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50]
 		case 3: {
 			printf("\nDigite o sexo pelo qual deseja filtrar [m/f]\n");
 			char sexo;
-			scanf("%1c%*c", &sexo);
+			scanf("%c", &sexo);
+			limpaBuffer();
 			sexo = toupper(sexo);
 			if(sexo == 'M' || sexo == 'F'){
 				printf("%s", cabecalho);
