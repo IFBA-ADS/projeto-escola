@@ -35,4 +35,6 @@ int filtrarPorSexo(Pessoa listaIn[], int quantidadeIn, char sexo, Pessoa listaOu
 
 int filtrarPorNome(Pessoa listaIn[], int quantidadeIn, char busca[TAM_NOME], Pessoa listaOut[]);
 
+int filtrarAniversariantes(Pessoa listaIn[], int quantidadeIn, int mes, Pessoa listaOut[]);
+
 #endif

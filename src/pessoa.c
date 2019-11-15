@@ -141,7 +141,10 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50]
 			break;
 		}
 		case 5: {
-			printf("Nao implementado\n\n");
+			printf("%s", cabecalho);
+			Pessoa listaFiltrada[TAM_LISTA_PESSOA];
+			int total = filtrarAniversariantes(lista, quantidade, dataAtual().mes, listaFiltrada);
+			listar_Pessoa(listaFiltrada, total);
 			break;
 		}
 		default: {
@@ -165,9 +168,9 @@ void listar_Pessoa(Pessoa lista[], int quantidade){
 			printf("------\n");
 		}
 	}else{
-		printf("\n-------------------------\n");
-		printf("Nenum registro encontrado");
-		printf("\n-------------------------\n");
+		printf("-------------------------\n");
+		printf("Nenum registro encontrado\n");
+		printf("-------------------------\n");
 	}
 	printf("\n");
 }
@@ -201,6 +204,17 @@ int filtrarPorNome(Pessoa listaIn[], int quantidadeIn, char busca[TAM_NOME], Pes
 	int i, outI;
 	for(i = 0, outI = 0; i < quantidadeIn; i++){
 		if(strcmp(busca, "---") == 0 || compararStrings(listaIn[i].nome, busca)){
+			listaOut[outI] = listaIn[i];
+			outI++;
+		}
+	}
+	return outI;
+}
+
+int filtrarAniversariantes(Pessoa listaIn[], int quantidadeIn, int mes, Pessoa listaOut[]){
+	int i, outI;
+	for(i = 0, outI = 0; i < quantidadeIn; i++){
+		if(listaIn[i].data_nascimento.mes == mes){
 			listaOut[outI] = listaIn[i];
 			outI++;
 		}
