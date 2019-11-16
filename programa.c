@@ -65,10 +65,18 @@ void main(){
 							break;
 						}
 						case 3:{
-							printf("\nNao implementado\n\n");
+							retornoAluno = desativar_Pessoa(lista_aluno, qtd_aluno);
+							if(retornoAluno == SUCESSO_DESATIVAR)
+								printf("\nAluno deletado com Sucesso\n");
+							else
+								printarMensagemDeErro_Pessoa(retornoAluno);
 							break;
 						}
 						case 4:{
+							printf("\nNao implementado\n\n");
+							break;
+						}
+						case 5:{
 							limparTela();
 							voltarAluno = 1;
 							break;
@@ -112,10 +120,18 @@ void main(){
 							break;
 						}
 						case 3:{
-							printf("\nNao implementado\n\n");
+							retornoProfessor = desativar_Pessoa(lista_professor, qtd_professor);
+							if(retornoProfessor == SUCESSO_DESATIVAR)
+								printf("\nProfessor deletado com Sucesso\n");
+							else
+								printarMensagemDeErro_Pessoa(retornoProfessor);
 							break;
 						}
 						case 4:{
+							printf("\nNao implementado\n\n");
+							break;
+						}
+						case 5:{
 							limparTela();
 							voltarProfessor = 1;
 							break;

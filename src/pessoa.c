@@ -12,7 +12,8 @@ int menu_Pessoa(){
 	printf("1 - Cadastrar\n");
 	printf("2 - Listar\n");
 	printf("3 - Apagar\n");
-	printf("4 - Voltar\n\n");
+	printf("4 - Editar\n");
+	printf("5 - Voltar\n\n");
 
 	printf("Digite a sua opcao\n");
 	scanf("%d%*c",&opcao);
@@ -69,11 +70,28 @@ int inserir_Pessoa(Pessoa lista[], int quantidade){
 	if(validarCPF(lista[quantidade].cpf, strlen(lista[quantidade].cpf)) == 0)
 	 	return ERRO_CADASTRO_CPF;
 
+	lista[quantidade].ativo = 1;
+
 	return SUCESSO_CADASTRO;
 }
 
+int desativar_Pessoa(Pessoa lista[], int quantidade){
+	int matricula;
+	printf("\nDigite a Matricula\n");
+	scanf("%d%*c", &matricula);
+
+	int i, resultado = ERRO_MATRICULA_NAO_ENCONTRADA;
+	for(i = 0; i < quantidade && resultado == ERRO_MATRICULA_NAO_ENCONTRADA; i++){
+		if(lista[i].matricula == matricula && lista[i].ativo){
+			lista[i].ativo = 0;
+			resultado = SUCESSO_DESATIVAR;
+		}
+	}
+	return resultado;
+}
+
 void printarMensagemDeErro_Pessoa(int codigo){
-	printf("\nNao foi possivel fazer o Cadastro. Erro: ");
+	printf("\nNao foi possivel executar a acao. Erro: ");
 	switch(codigo){
 		case ERRO_CADASTRO_MATRICULA:{
 			printf("Matricula Invalida\n");
@@ -91,6 +109,10 @@ void printarMensagemDeErro_Pessoa(int codigo){
 			printf("Data Invalida\n");
 			break;
 		}
+		case ERRO_MATRICULA_NAO_ENCONTRADA:{
+			printf("Matricula nao encontrada\n");
+			break;
+		}
 		default:{
 			printf("Erro Desconhecido\n");
 			break;
@@ -103,7 +125,9 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50]
 	switch(opcao){
 		case 1: {
 			printf("%s", cabecalho);
-			listar_Pessoa(lista, quantidade);
+			Pessoa listaFiltrada[quantidade];
+			int total = filtrarAtivos_Pessoa(lista, quantidade, listaFiltrada);
+			listar_Pessoa(listaFiltrada, total);
 			break;
 		}
 		case 2: {
@@ -118,8 +142,8 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50]
 			sexo = toupper(sexo);
 			if(sexo == 'M' || sexo == 'F'){
 				printf("%s", cabecalho);
-				Pessoa listaFiltrada[TAM_LISTA_PESSOA];
-				int total = filtrarPorSexo(lista, quantidade, sexo, listaFiltrada);
+				Pessoa listaFiltrada[quantidade];
+				int total = filtrarPorSexo_Pessoa(lista, quantidade, sexo, listaFiltrada);
 				listar_Pessoa(listaFiltrada, total);
 			}else{
 				printf("Sexo Invalido\n");
@@ -136,15 +160,15 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50]
 					printf("Minimo de 3 caracteres\n");
 			}while(strlen(busca) < 3);
 			printf("%s", cabecalho);
-			Pessoa listaFiltrada[TAM_LISTA_PESSOA];
-			int total = filtrarPorNome(lista, quantidade, busca, listaFiltrada);
+			Pessoa listaFiltrada[quantidade];
+			int total = filtrarPorNome_Pessoa(lista, quantidade, busca, listaFiltrada);
 			listar_Pessoa(listaFiltrada, total);
 			break;
 		}
 		case 5: {
 			printf("%s", cabecalho);
-			Pessoa listaFiltrada[TAM_LISTA_PESSOA];
-			int total = filtrarAniversariantes(lista, quantidade, dataAtual().mes, listaFiltrada);
+			Pessoa listaFiltrada[quantidade];
+			int total = filtrarAniversariantes_Pessoa(lista, quantidade, dataAtual().mes, listaFiltrada);
 			listar_Pessoa(listaFiltrada, total);
 			break;
 		}
@@ -158,7 +182,7 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50]
 void listar_Pessoa(Pessoa lista[], int quantidade){
 	if(quantidade > 0){
 		int i;
-		ordenarListaPorNome(lista, quantidade);
+		ordenarListaPorNome_Pessoa(lista, quantidade);
 		for(i = 0; i < quantidade; i++){
 			printf("------\n");
 			printf("Matricula: %d\n", lista[i].matricula);
@@ -176,7 +200,7 @@ void listar_Pessoa(Pessoa lista[], int quantidade){
 	printf("\n");
 }
 
-void ordenarListaPorNome(Pessoa lista[], int max){
+void ordenarListaPorNome_Pessoa(Pessoa lista[], int max){
     Pessoa aux;
     int k, j;
     for (k = 0; k < max - 1; k++) {
@@ -190,10 +214,10 @@ void ordenarListaPorNome(Pessoa lista[], int max){
     }
 }
 
-int filtrarPorSexo(Pessoa listaIn[], int quantidadeIn, char sexo, Pessoa listaOut[]){
+int filtrarAtivos_Pessoa(Pessoa listaIn[], int quantidadeIn, Pessoa listaOut[]){
 	int i, outI;
 	for(i = 0, outI = 0; i < quantidadeIn; i++){
-		if(sexo == '-' || listaIn[i].sexo == toupper(sexo)){
+		if(listaIn[i].ativo){
 			listaOut[outI] = listaIn[i];
 			outI++;
 		}
@@ -201,10 +225,10 @@ int filtrarPorSexo(Pessoa listaIn[], int quantidadeIn, char sexo, Pessoa listaOu
 	return outI;
 }
 
-int filtrarPorNome(Pessoa listaIn[], int quantidadeIn, char busca[TAM_NOME], Pessoa listaOut[]){
+int filtrarPorSexo_Pessoa(Pessoa listaIn[], int quantidadeIn, char sexo, Pessoa listaOut[]){
 	int i, outI;
 	for(i = 0, outI = 0; i < quantidadeIn; i++){
-		if(strcmp(busca, "---") == 0 || compararStrings(listaIn[i].nome, busca)){
+		if((sexo == '-' || listaIn[i].sexo == toupper(sexo) && listaIn[i].ativo)){
 			listaOut[outI] = listaIn[i];
 			outI++;
 		}
@@ -212,10 +236,21 @@ int filtrarPorNome(Pessoa listaIn[], int quantidadeIn, char busca[TAM_NOME], Pes
 	return outI;
 }
 
-int filtrarAniversariantes(Pessoa listaIn[], int quantidadeIn, int mes, Pessoa listaOut[]){
+int filtrarPorNome_Pessoa(Pessoa listaIn[], int quantidadeIn, char busca[TAM_NOME], Pessoa listaOut[]){
 	int i, outI;
 	for(i = 0, outI = 0; i < quantidadeIn; i++){
-		if(listaIn[i].data_nascimento.mes == mes){
+		if((strcmp(busca, "---") == 0 || compararStrings(listaIn[i].nome, busca) && listaIn[i].ativo)){
+			listaOut[outI] = listaIn[i];
+			outI++;
+		}
+	}
+	return outI;
+}
+
+int filtrarAniversariantes_Pessoa(Pessoa listaIn[], int quantidadeIn, int mes, Pessoa listaOut[]){
+	int i, outI;
+	for(i = 0, outI = 0; i < quantidadeIn; i++){
+		if(listaIn[i].data_nascimento.mes == mes && listaIn[i].ativo){
 			listaOut[outI] = listaIn[i];
 			outI++;
 		}
