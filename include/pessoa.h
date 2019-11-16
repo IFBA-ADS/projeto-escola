@@ -12,6 +12,9 @@
 #define SUCESSO_DESATIVAR 1
 #define ERRO_MATRICULA_NAO_ENCONTRADA 6
 
+// Defines: editar
+#define SUCESSO_EDITAR 1
+
 #define TAM_NOME 100
 
 typedef struct pessoa{
@@ -27,7 +30,7 @@ int menu_Pessoa();
 
 int menuListar_Pessoa();
 
-int inserir_Pessoa(Pessoa lista[], int quantidade);
+int criar_Pessoa(Pessoa* pessoa, int ativo);
 
 int desativar_Pessoa(Pessoa lista[], int quantidade);
 
@@ -46,5 +49,7 @@ int filtrarPorSexo_Pessoa(Pessoa listaIn[], int quantidadeIn, char sexo, Pessoa 
 int filtrarPorNome_Pessoa(Pessoa listaIn[], int quantidadeIn, char busca[TAM_NOME], Pessoa listaOut[]);
 
 int filtrarAniversariantes_Pessoa(Pessoa listaIn[], int quantidadeIn, int mes, Pessoa listaOut[]);
+
+int procurarPorMatricula_Pessoa(Pessoa lista[], int quantidade, int matricula);
 
 #endif

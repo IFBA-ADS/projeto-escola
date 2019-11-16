@@ -38,22 +38,22 @@ int menuListar_Pessoa(){
 	return opcao;
 }
 
-int inserir_Pessoa(Pessoa lista[], int quantidade){
+int criar_Pessoa(Pessoa* novaPessoa, int ativo){
 	printf("\nDigite a Matricula\n");
-	scanf("%d%*c", &lista[quantidade].matricula);
+	scanf("%d%*c", &novaPessoa->matricula);
 	
-	if (lista[quantidade].matricula <= 0)
+	if (novaPessoa->matricula <= 0)
 		return ERRO_CADASTRO_MATRICULA;
 
 	printf("\nDigite o Nome\n");
-	cfgets(lista[quantidade].nome, TAM_NOME, stdin);
+	cfgets(novaPessoa->nome, TAM_NOME, stdin);
 
 	printf("\nDigite o Sexo [M/F]\n");
-	scanf("%c", &lista[quantidade].sexo);
+	scanf("%c", &novaPessoa->sexo);
 	limpaBuffer();
 	
-	lista[quantidade].sexo = toupper(lista[quantidade].sexo);
-	if(lista[quantidade].sexo != 'M' && lista[quantidade].sexo != 'F')
+	novaPessoa->sexo = toupper(novaPessoa->sexo);
+	if(novaPessoa->sexo != 'M' && novaPessoa->sexo != 'F')
 		return ERRO_CADASTRO_SEXO;
 	
 	char nascimento[TAM_DATA];
@@ -61,32 +61,50 @@ int inserir_Pessoa(Pessoa lista[], int quantidade){
 	printf("\nDigite a data de nascimento no formato 99/99/9999\n");
 	cfgets(nascimento, TAM_DATA, stdin);
 
-	if(validarData(nascimento, strlen(nascimento), &lista[quantidade].data_nascimento) == 0)
+	if(validarData(nascimento, strlen(nascimento), &novaPessoa->data_nascimento) == 0)
 		return ERRO_CADASTRO_DATA;
 
 	printf("\nDigite o CPF no formato 999.999.999-99\n");
-	cfgets(lista[quantidade].cpf, TAM_CPF, stdin);
+	cfgets(novaPessoa->cpf, TAM_CPF, stdin);
 
-	if(validarCPF(lista[quantidade].cpf, strlen(lista[quantidade].cpf)) == 0)
+	if(validarCPF(novaPessoa->cpf, strlen(novaPessoa->cpf)) == 0)
 	 	return ERRO_CADASTRO_CPF;
 
-	lista[quantidade].ativo = 1;
+	novaPessoa->ativo = ativo;
 
 	return SUCESSO_CADASTRO;
 }
 
 int desativar_Pessoa(Pessoa lista[], int quantidade){
 	int matricula;
-	printf("\nDigite a Matricula\n");
+	printf("\nDigite a Matricula para procurar\n");
 	scanf("%d%*c", &matricula);
 
-	int i, resultado = ERRO_MATRICULA_NAO_ENCONTRADA;
-	for(i = 0; i < quantidade && resultado == ERRO_MATRICULA_NAO_ENCONTRADA; i++){
-		if(lista[i].matricula == matricula && lista[i].ativo){
-			lista[i].ativo = 0;
-			resultado = SUCESSO_DESATIVAR;
-		}
+	int resultado = ERRO_MATRICULA_NAO_ENCONTRADA;
+	int index = procurarPorMatricula_Pessoa(lista, quantidade, matricula);
+
+	if(index >= 0){
+		lista[index].ativo = 0;
+		resultado = SUCESSO_DESATIVAR;
 	}
+	return resultado;
+}
+
+int editar_Pessoa(Pessoa lista[], int quantidade){
+	int matricula;
+	printf("\nDigite a Matricula para procurar\n");
+	scanf("%d%*c", &matricula);
+
+	int resultado = ERRO_MATRICULA_NAO_ENCONTRADA;
+	int indice = procurarPorMatricula_Pessoa(lista, quantidade, matricula);
+
+	if(indice >= 0){
+		Pessoa pessoa;
+		resultado = criar_Pessoa(&pessoa, lista[indice].ativo);
+		if(resultado == SUCESSO_EDITAR)
+			lista[indice] = pessoa;
+	}
+
 	return resultado;
 }
 
@@ -256,4 +274,12 @@ int filtrarAniversariantes_Pessoa(Pessoa listaIn[], int quantidadeIn, int mes, P
 		}
 	}
 	return outI;
+}
+
+int procurarPorMatricula_Pessoa(Pessoa lista[], int quantidade, int matricula){
+	int indice = -1, i;
+	for(i = 0; i < quantidade && indice == -1; i++)
+		if(lista[i].matricula == matricula && lista[i].ativo)
+			indice = i;
+	return indice;
 }

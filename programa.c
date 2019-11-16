@@ -47,7 +47,7 @@ void main(){
 					switch(opcaoAluno){
 						case 1:{
 							if(qtd_aluno + 1 <= TAM_LISTA_ALUNO){
-								retornoAluno = inserir_Pessoa(lista_aluno, qtd_aluno);
+								retornoAluno = criar_Pessoa(&lista_aluno[qtd_aluno], 1);
 								if(retornoAluno == SUCESSO_CADASTRO){
 									printf("\nCadastro Realizado com Sucesso\n");
 									qtd_aluno++;
@@ -73,7 +73,11 @@ void main(){
 							break;
 						}
 						case 4:{
-							printf("\nNao implementado\n\n");
+							retornoAluno = editar_Pessoa(lista_aluno, qtd_aluno);
+							if(retornoAluno == SUCESSO_EDITAR)
+								printf("\nAluno editado com Sucesso\n");
+							else
+								printarMensagemDeErro_Pessoa(retornoAluno);
 							break;
 						}
 						case 5:{
@@ -102,7 +106,7 @@ void main(){
 					switch(opcaoProfessor){
 						case 1:{
 							if(qtd_professor + 1 <= TAM_LISTA_PROFESSOR){
-								retornoProfessor = inserir_Pessoa(lista_professor, qtd_professor);
+								retornoProfessor = criar_Pessoa(&lista_professor[qtd_professor], 1);
 								if(retornoProfessor == SUCESSO_CADASTRO){
 									printf("\nCadastro Realizado com Sucesso\n");
 									qtd_professor++;
@@ -128,7 +132,11 @@ void main(){
 							break;
 						}
 						case 4:{
-							printf("\nNao implementado\n\n");
+							retornoProfessor = editar_Pessoa(lista_professor, qtd_professor);
+							if(retornoProfessor == SUCESSO_EDITAR)
+								printf("\nProfessor editado com Sucesso\n");
+							else
+								printarMensagemDeErro_Pessoa(retornoProfessor);
 							break;
 						}
 						case 5:{
