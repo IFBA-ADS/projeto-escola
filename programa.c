@@ -47,7 +47,7 @@ void main(){
 					switch(opcaoAluno){
 						case 1:{
 							if(qtd_aluno + 1 <= TAM_LISTA_ALUNO){
-								retornoAluno = criar_Pessoa(&lista_aluno[qtd_aluno], 1);
+								retornoAluno = criar_Pessoa(&lista_aluno[qtd_aluno]);
 								if(retornoAluno == SUCESSO_CADASTRO){
 									printf("\nCadastro Realizado com Sucesso\n");
 									qtd_aluno++;
@@ -56,7 +56,7 @@ void main(){
 								}
 							}
 							else{
-								printf("\nLimite de alunos alcançado\n");
+								printf("\nLimite de alunos alcancado\n");
 							}
 							break;
 						}
@@ -65,9 +65,11 @@ void main(){
 							break;
 						}
 						case 3:{
-							retornoAluno = desativar_Pessoa(lista_aluno, qtd_aluno);
-							if(retornoAluno == SUCESSO_DESATIVAR)
+							retornoAluno = deletar_Pessoa(lista_aluno, qtd_aluno);
+							if(retornoAluno == SUCESSO_DESATIVAR){
+								qtd_aluno--;
 								printf("\nAluno deletado com Sucesso\n");
+							}
 							else
 								printarMensagemDeErro_Pessoa(retornoAluno);
 							break;
@@ -106,7 +108,7 @@ void main(){
 					switch(opcaoProfessor){
 						case 1:{
 							if(qtd_professor + 1 <= TAM_LISTA_PROFESSOR){
-								retornoProfessor = criar_Pessoa(&lista_professor[qtd_professor], 1);
+								retornoProfessor = criar_Pessoa(&lista_professor[qtd_professor]);
 								if(retornoProfessor == SUCESSO_CADASTRO){
 									printf("\nCadastro Realizado com Sucesso\n");
 									qtd_professor++;
@@ -115,7 +117,7 @@ void main(){
 								}
 							}
 							else{
-								printf("\nLimite de professores alcançado\n");
+								printf("\nLimite de professores alcancado\n");
 							}
 							break;
 						}
@@ -124,9 +126,11 @@ void main(){
 							break;
 						}
 						case 3:{
-							retornoProfessor = desativar_Pessoa(lista_professor, qtd_professor);
-							if(retornoProfessor == SUCESSO_DESATIVAR)
+							retornoProfessor = deletar_Pessoa(lista_professor, qtd_professor);
+							if(retornoProfessor == SUCESSO_DESATIVAR){
+								qtd_professor--;
 								printf("\nProfessor deletado com Sucesso\n");
+							}
 							else
 								printarMensagemDeErro_Pessoa(retornoProfessor);
 							break;

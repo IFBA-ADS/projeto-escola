@@ -42,7 +42,7 @@ int menuListar_Pessoa()
 	return opcao;
 }
 
-int criar_Pessoa(Pessoa *novaPessoa, int ativo)
+int criar_Pessoa(Pessoa *novaPessoa)
 {
 	printf("\nDigite a Matricula\n");
 	scanf("%d", &novaPessoa->matricula);
@@ -76,12 +76,10 @@ int criar_Pessoa(Pessoa *novaPessoa, int ativo)
 	if (validarCPF(novaPessoa->cpf, strlen(novaPessoa->cpf)) == 0)
 		return ERRO_CADASTRO_CPF;
 
-	novaPessoa->ativo = ativo;
-
 	return SUCESSO_CADASTRO;
 }
 
-int desativar_Pessoa(Pessoa lista[], int quantidade)
+int deletar_Pessoa(Pessoa lista[], int quantidade)
 {
 	int matricula;
 	printf("\nDigite a Matricula para procurar\n");
@@ -93,7 +91,9 @@ int desativar_Pessoa(Pessoa lista[], int quantidade)
 
 	if (index >= 0)
 	{
-		lista[index].ativo = 0;
+		int i;
+		for(i = index + 1; i < quantidade; i++)
+			lista[i - 1] = lista[i];
 		resultado = SUCESSO_DESATIVAR;
 	}
 	return resultado;
@@ -112,7 +112,7 @@ int editar_Pessoa(Pessoa lista[], int quantidade)
 	if (indice >= 0)
 	{
 		Pessoa pessoa;
-		resultado = criar_Pessoa(&pessoa, lista[indice].ativo);
+		resultado = criar_Pessoa(&pessoa);
 		if (resultado == SUCESSO_EDITAR)
 			lista[indice] = pessoa;
 	}
@@ -160,25 +160,23 @@ void printarMensagemDeErro_Pessoa(int codigo)
 
 void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50])
 {
+	Pessoa lista_copia[quantidade];
+	copiarLista_Pessoa(lista, quantidade, lista_copia);
 	int opcao = menuListar_Pessoa();
 	switch (opcao)
 	{
 		case 1:
 		{
 			printf("%s", cabecalho);
-			Pessoa listaFiltrada[quantidade];
-			int total = filtrarAtivos_Pessoa(lista, quantidade, listaFiltrada);
-			ordenarListaPorNome_Pessoa(listaFiltrada, total);
-			listar_Pessoa(listaFiltrada, total);
+			ordenarListaPorNome_Pessoa(lista_copia, quantidade);
+			listar_Pessoa(lista_copia, quantidade);
 			break;
 		}
 		case 2:
 		{
 			printf("%s", cabecalho);
-			Pessoa listaFiltrada[quantidade];
-			int total = filtrarAtivos_Pessoa(lista, quantidade, listaFiltrada);
-			ordenarListaPorData_Pessoa(listaFiltrada, total);
-			listar_Pessoa(listaFiltrada, total);
+			ordenarListaPorData_Pessoa(lista_copia, quantidade);
+			listar_Pessoa(lista_copia, quantidade);
 			break;
 		}
 		case 3:
@@ -191,9 +189,8 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50]
 			if (sexo == 'M' || sexo == 'F')
 			{
 				printf("%s", cabecalho);
-				Pessoa listaFiltrada[quantidade];
-				int total = filtrarPorSexo_Pessoa(lista, quantidade, sexo, listaFiltrada);
-				listar_Pessoa(listaFiltrada, total);
+				int total = filtrarPorSexo_Pessoa(lista, quantidade, sexo, lista_copia);
+				listar_Pessoa(lista_copia, total);
 			}
 			else
 			{
@@ -213,17 +210,15 @@ void gerenciarListagem_Pessoa(Pessoa lista[], int quantidade, char cabecalho[50]
 					printf("Minimo de 3 caracteres\n");
 			} while (strlen(busca) < 3);
 			printf("%s", cabecalho);
-			Pessoa listaFiltrada[quantidade];
-			int total = filtrarPorNome_Pessoa(lista, quantidade, busca, listaFiltrada);
-			listar_Pessoa(listaFiltrada, total);
+			int total = filtrarPorNome_Pessoa(lista, quantidade, busca, lista_copia);
+			listar_Pessoa(lista_copia, total);
 			break;
 		}
 		case 5:
 		{
 			printf("%s", cabecalho);
-			Pessoa listaFiltrada[quantidade];
-			int total = filtrarAniversariantes_Pessoa(lista, quantidade, dataAtual().mes, listaFiltrada);
-			listar_Pessoa(listaFiltrada, total);
+			int total = filtrarAniversariantes_Pessoa(lista, quantidade, dataAtual().mes, lista_copia);
+			listar_Pessoa(lista_copia, total);
 			break;
 		}
 		default:
@@ -295,26 +290,12 @@ void ordenarListaPorData_Pessoa(Pessoa lista[], int max)
 	}
 }
 
-int filtrarAtivos_Pessoa(Pessoa listaIn[], int quantidadeIn, Pessoa listaOut[])
-{
-	int i, outI;
-	for (i = 0, outI = 0; i < quantidadeIn; i++)
-	{
-		if (listaIn[i].ativo)
-		{
-			listaOut[outI] = listaIn[i];
-			outI++;
-		}
-	}
-	return outI;
-}
-
 int filtrarPorSexo_Pessoa(Pessoa listaIn[], int quantidadeIn, char sexo, Pessoa listaOut[])
 {
 	int i, outI;
 	for (i = 0, outI = 0; i < quantidadeIn; i++)
 	{
-		if ((sexo == '-' || listaIn[i].sexo == toupper(sexo) && listaIn[i].ativo))
+		if ((sexo == '-' || listaIn[i].sexo == toupper(sexo)))
 		{
 			listaOut[outI] = listaIn[i];
 			outI++;
@@ -328,7 +309,7 @@ int filtrarPorNome_Pessoa(Pessoa listaIn[], int quantidadeIn, char busca[TAM_NOM
 	int i, outI;
 	for (i = 0, outI = 0; i < quantidadeIn; i++)
 	{
-		if ((strcmp(busca, "---") == 0 || compararStrings(listaIn[i].nome, busca) && listaIn[i].ativo))
+		if ((strcmp(busca, "---") == 0 || compararStrings(listaIn[i].nome, busca)))
 		{
 			listaOut[outI] = listaIn[i];
 			outI++;
@@ -342,7 +323,7 @@ int filtrarAniversariantes_Pessoa(Pessoa listaIn[], int quantidadeIn, int mes, P
 	int i, outI;
 	for (i = 0, outI = 0; i < quantidadeIn; i++)
 	{
-		if (listaIn[i].data_nascimento.mes == mes && listaIn[i].ativo)
+		if (listaIn[i].data_nascimento.mes == mes)
 		{
 			listaOut[outI] = listaIn[i];
 			outI++;
@@ -355,7 +336,14 @@ int procurarPorMatricula_Pessoa(Pessoa lista[], int quantidade, int matricula)
 {
 	int indice = -1, i;
 	for (i = 0; i < quantidade && indice == -1; i++)
-		if (lista[i].matricula == matricula && lista[i].ativo)
+		if (lista[i].matricula == matricula)
 			indice = i;
 	return indice;
+}
+
+void copiarLista_Pessoa(Pessoa listaIn[], int quantidadeIn, Pessoa listaOut[])
+{
+	int i;
+	for(i = 0; i < quantidadeIn; i++)
+		listaOut[i] = listaIn[i];
 }
