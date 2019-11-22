@@ -30,4 +30,6 @@ int compararStrings(const char* string, const char* substring);
 
 void limparTela();
 
+int compararDatas(Data data1, Data data2);
+
 #endif

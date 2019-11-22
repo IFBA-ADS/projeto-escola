@@ -235,7 +235,8 @@ int menu_Principal(){
 	printf("4 - Sair\n\n");
 
 	printf("Digite a sua opcao\n");
-	scanf("%d",&opcao_principal);
+	scanf("%d", &opcao_principal);
+	limpaBuffer();
 
 	return opcao_principal;
 }

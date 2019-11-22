@@ -170,3 +170,16 @@ void limparTela(){
 		printf("\e[H\e[2J");
 	#endif
 }
+
+int compararDatas(Data data1, Data data2)
+{
+	int maior = 0;
+	maior = data1.ano > data2.ano ? 1 : data2.ano > data1.ano ? 2 : 0;
+	if(maior != 0)
+		return maior;
+	maior = data1.mes > data2.mes ? 1 : data2.mes > data1.mes ? 2 : 0;
+	if(maior != 0)
+		return maior;
+	maior = data1.dia > data2.dia ? 1 : data2.dia > data1.dia ? 2 : 0;
+	return maior;
+}

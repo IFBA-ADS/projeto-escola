@@ -42,6 +42,8 @@ void listar_Pessoa(Pessoa lista[], int quantidade);
 
 void ordenarListaPorNome_Pessoa(Pessoa lista[], int max);
 
+void ordenarListaPorData_Pessoa(Pessoa lista[], int max);
+
 int filtrarAtivos_Pessoa(Pessoa listaIn[], int quantidadeIn, Pessoa listaOut[]);
 
 int filtrarPorSexo_Pessoa(Pessoa listaIn[], int quantidadeIn, char sexo, Pessoa listaOut[]);
