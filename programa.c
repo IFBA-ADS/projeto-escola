@@ -170,7 +170,7 @@ void main(){
 					switch(opcaoDisciplina){
 						case 1:{
 							
-							retornoDisciplina = inserir_Disciplina(lista_disciplina, lista_professor, qtd_disciplina, qtd_professor);
+							retornoDisciplina = criar_Disciplina(&lista_disciplina[qtd_disciplina], lista_professor, qtd_professor);
 							if(retornoDisciplina == SUCESSO_CADASTRO){
 								printf("\nCadastro Realizado Com Sucesso\n");
 								qtd_disciplina++;

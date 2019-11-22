@@ -22,37 +22,29 @@ int menu_Disciplina()
 	return opcao_Disciplina;
 }
 
-int inserir_Disciplina(Disciplina lista_disciplina[], Pessoa lista_professor[], int qtd_disciplina, int qtd_professor)
+int criar_Disciplina(Disciplina *novaDisciplina, Pessoa lista_professor[], int qtd_professor)
 {
 
 	int i;
 
 	printf("\nMatricula da Disciplina\n");
-	scanf("%d", &lista_disciplina[qtd_disciplina].matricula);
-	getchar();
+	scanf("%d", &novaDisciplina->matricula);
+	limpaBuffer();
 
-	if (lista_disciplina[qtd_disciplina].matricula <= 0)
+	if (novaDisciplina->matricula <= 0)
 		return ERRO_CADASTRO_MATRICULA;
 
 	printf("\nNome da Disciplina\n");
-	fgets(lista_disciplina[qtd_disciplina].nome, 50, stdin);
-
-	size_t ln = strlen(lista_disciplina[qtd_disciplina].nome) - 1;
-	if (lista_disciplina[qtd_disciplina].nome[ln] = '\n')
-		lista_disciplina[qtd_disciplina].nome[ln] = '\0';
+	cfgets(novaDisciplina->nome, TAM_NOME, stdin);
 
 	printf("\nSemestre da Disciplina\n");
-	fgets(lista_disciplina[qtd_disciplina].semestre, 50, stdin);
+	cfgets(novaDisciplina->semestre, 50, stdin);
 
 	printf("\nProfessor da Disciplina\n");
-	fgets(lista_disciplina[qtd_disciplina].professor, 100, stdin);
-
-	ln = strlen(lista_disciplina[qtd_disciplina].professor) - 1;
-	if (lista_disciplina[qtd_disciplina].professor[ln] = '\n')
-		lista_disciplina[qtd_disciplina].professor[ln] = '\0';
+	cfgets(novaDisciplina->professor, 100, stdin);
 
 	for (i = 0; i < qtd_professor; i++)
-		if (lista_disciplina[qtd_disciplina].professor != lista_professor[i].nome)
+		if (novaDisciplina->professor != lista_professor[i].nome)
 			return PROFESSOR_NAO_ENCONTRADO;
 
 	return SUCESSO_CADASTRO;

@@ -26,7 +26,7 @@ typedef struct disciplina
 
 int menu_Disciplina();
 
-int inserir_Disciplina(Disciplina lista_disciplina[], Pessoa lista_professor[], int qtd_disciplina, int qtd_professor);
+int criar_Disciplina(Disciplina *novaDisciplina, Pessoa lista_professor[], int qtd_professor);
 
 void listar_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina);
 
