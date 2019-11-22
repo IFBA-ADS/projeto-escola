@@ -87,6 +87,28 @@ void listar_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina)
 	printf("----------\n");
 }
 
+int editar_Disciplina(Disciplina lista[], int quantidade)
+{
+	int matricula;
+	printf("\nDigite a Matricula para procurar\n");
+	scanf("%d", &matricula);
+	limpaBuffer();
+
+	int resultado = ERRO_MATRICULA_NAO_ENCONTRADA;
+	int indice = procurarPorMatricula_Disciplina(lista, quantidade, matricula);
+
+	if (indice >= 0)
+	{
+		Disciplina disciplina;
+		//resultado = criar_disciplina(&disciplina); É correto mexer diretamente com a Struct?
+		if (resultado == SUCESSO_EDITAR)
+			lista[indice] = disciplina;
+	}
+
+	return resultado;
+}
+
+
 int matricularAlunos(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno, int qtd_matriculados)
 {
 	int matriculaDisciplina, matriculaAluno, indiceDaDisciplina = 0, indiceDoAluno = 0;
@@ -134,3 +156,13 @@ void listarMatriculados(Disciplina lista_disciplina[], int qtd_disciplina, int q
 		printf("%s\n", lista_disciplina[indiceDaDisciplina].alunosMatriculados[cont].nome);
 	}
 }
+
+int procurarPorMatricula_Disciplina(Disciplina lista[], int quantidade, int matricula)
+{
+	int indice = -1, i;
+	for (i = 0; i < quantidade && indice == -1; i++)
+		if (lista[i].matricula == matricula)
+			indice = i;
+	return indice;
+}
+

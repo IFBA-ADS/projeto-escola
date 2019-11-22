@@ -199,6 +199,7 @@ void main(){
 						case 2:{
 							listar_Disciplina(lista_disciplina, qtd_disciplina);
 							break;
+
 						}
 						case 5:{
 							limparTela();
