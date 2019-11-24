@@ -14,217 +14,301 @@
 
 int menu_Principal();
 
-void main(){
+void main()
+{
 	Pessoa lista_aluno[TAM_LISTA_ALUNO];
 	Pessoa lista_professor[TAM_LISTA_PROFESSOR];
 	Disciplina lista_disciplina[TAM_DISCIPLINA];
 
 	int qtd_aluno = 0;
 	int qtd_professor = 0;
-	int qtd_disciplina = 0;
+	int qtd_disciplina = 0;	
 
 	int sair = 0;
 
 	int opcaoPrincipal, opcaoAluno, opcaoProfessor, opcaoDisciplina = 0;
 	int voltarAluno, voltarProfessor, voltarDisciplina;
-	int retornoAluno, retornoProfessor, retornoDisciplina; 
+	int retornoAluno, retornoProfessor, retornoDisciplina;
 
-	while(!sair){
+	while (!sair)
+	{
 
 		opcaoPrincipal = menu_Principal();
 
-		switch(opcaoPrincipal){
+		switch (opcaoPrincipal)
+		{
 
-			case 1:{	// Menu Aluno
+		case 1:
+		{ // Menu Aluno
 
-				voltarAluno = 0;
+			voltarAluno = 0;
 
-				while( ! voltarAluno){
+			while (!voltarAluno)
+			{
 
-					printf("\n### Menu Aluno ### \n\n");
-					opcaoAluno = menu_Pessoa(); 
-					
-					switch(opcaoAluno){
-						case 1:{
-							if(qtd_aluno + 1 <= TAM_LISTA_ALUNO){
-								retornoAluno = criar_Pessoa(&lista_aluno[qtd_aluno], 1);
-								if(retornoAluno == SUCESSO_CADASTRO){
-									printf("\nCadastro Realizado com Sucesso\n");
-									qtd_aluno++;
-								}else{
-									printarMensagemDeErro_Pessoa(retornoAluno);
-								}
-							}
-							else{
-								printf("\nLimite de alunos alcançado\n");
-							}
-							break;
+				printf("\n### Menu Aluno ### \n\n");
+				opcaoAluno = menu_Pessoa();
+
+				switch (opcaoAluno)
+				{
+				case 1:
+				{
+					if (qtd_aluno + 1 <= TAM_LISTA_ALUNO)
+					{
+						retornoAluno = criar_Pessoa(&lista_aluno[qtd_aluno], 1);
+						if (retornoAluno == SUCESSO_CADASTRO)
+						{
+							printf("\nCadastro Realizado com Sucesso\n");
+							qtd_aluno++;
 						}
-						case 2:{
-							gerenciarListagem_Pessoa(lista_aluno, qtd_aluno, "\n#### Alunos Cadastrados ###\n\n");
-							break;
-						}
-						case 3:{
-							retornoAluno = desativar_Pessoa(lista_aluno, qtd_aluno);
-							if(retornoAluno == SUCESSO_DESATIVAR)
-								printf("\nAluno deletado com Sucesso\n");
-							else
-								printarMensagemDeErro_Pessoa(retornoAluno);
-							break;
-						}
-						case 4:{
-							retornoAluno = editar_Pessoa(lista_aluno, qtd_aluno);
-							if(retornoAluno == SUCESSO_EDITAR)
-								printf("\nAluno editado com Sucesso\n");
-							else
-								printarMensagemDeErro_Pessoa(retornoAluno);
-							break;
-						}
-						case 5:{
-							limparTela();
-							voltarAluno = 1;
-							break;
-						}
-						default:{
-							printf("\nOpcao Invalida\n");
-							break;
+						else
+						{
+							printarMensagemDeErro_Pessoa(retornoAluno);
 						}
 					}
+					else
+					{
+						printf("\nLimite de alunos alcançado\n");
+					}
+					break;
 				}
-				break;
+				case 2:
+				{
+					gerenciarListagem_Pessoa(lista_aluno, qtd_aluno, "\n#### Alunos Cadastrados ###\n\n");
+					break;
+				}
+				case 3:
+				{
+					retornoAluno = desativar_Pessoa(lista_aluno, qtd_aluno);
+					if (retornoAluno == SUCESSO_DESATIVAR)
+						printf("\nAluno deletado com Sucesso\n");
+					else
+						printarMensagemDeErro_Pessoa(retornoAluno);
+					break;
+				}
+				case 4:
+				{
+					retornoAluno = editar_Pessoa(lista_aluno, qtd_aluno);
+					if (retornoAluno == SUCESSO_EDITAR)
+						printf("\nAluno editado com Sucesso\n");
+					else
+						printarMensagemDeErro_Pessoa(retornoAluno);
+					break;
+				}
+				case 5:
+				{
+					limparTela();
+					voltarAluno = 1;
+					break;
+				}
+				default:
+				{
+					printf("\nOpcao Invalida\n");
+					break;
+				}
+				}
 			}
+			break;
+		}
 
-			case 2:{	//Menu Professor
+		case 2:
+		{ //Menu Professor
 
-				voltarProfessor = 0;
+			voltarProfessor = 0;
 
-				while( ! voltarProfessor){
+			while (!voltarProfessor)
+			{
 
-					printf("\n### Menu Professor ### \n\n");
-					opcaoProfessor = menu_Pessoa();
+				printf("\n### Menu Professor ### \n\n");
+				opcaoProfessor = menu_Pessoa();
 
-					switch(opcaoProfessor){
-						case 1:{
-							if(qtd_professor + 1 <= TAM_LISTA_PROFESSOR){
-								retornoProfessor = criar_Pessoa(&lista_professor[qtd_professor], 1);
-								if(retornoProfessor == SUCESSO_CADASTRO){
-									printf("\nCadastro Realizado com Sucesso\n");
-									qtd_professor++;
-								}else{
-									printarMensagemDeErro_Pessoa(retornoProfessor);
-								}
-							}
-							else{
-								printf("\nLimite de professores alcançado\n");
-							}
-							break;
+				switch (opcaoProfessor)
+				{
+				case 1:
+				{
+					if (qtd_professor + 1 <= TAM_LISTA_PROFESSOR)
+					{
+						retornoProfessor = criar_Pessoa(&lista_professor[qtd_professor], 1);
+						if (retornoProfessor == SUCESSO_CADASTRO)
+						{
+							printf("\nCadastro Realizado com Sucesso\n");
+							qtd_professor++;
 						}
-						case 2:{
-							gerenciarListagem_Pessoa(lista_professor, qtd_professor, "\n#### Professores Cadastrados ###\n\n");
-							break;
-						}
-						case 3:{
-							retornoProfessor = desativar_Pessoa(lista_professor, qtd_professor);
-							if(retornoProfessor == SUCESSO_DESATIVAR)
-								printf("\nProfessor deletado com Sucesso\n");
-							else
-								printarMensagemDeErro_Pessoa(retornoProfessor);
-							break;
-						}
-						case 4:{
-							retornoProfessor = editar_Pessoa(lista_professor, qtd_professor);
-							if(retornoProfessor == SUCESSO_EDITAR)
-								printf("\nProfessor editado com Sucesso\n");
-							else
-								printarMensagemDeErro_Pessoa(retornoProfessor);
-							break;
-						}
-						case 5:{
-							limparTela();
-							voltarProfessor = 1;
-							break;
-						}
-						default:{
-							printf("\nOpcao Invalida\n");
-							break;
+						else
+						{
+							printarMensagemDeErro_Pessoa(retornoProfessor);
 						}
 					}
-
-				}
-
-				break;
-			}
-
-			case 3:{	//Menu Disciplina
-
-				voltarDisciplina = 0;
-
-				while( ! voltarDisciplina){
-
-					opcaoDisciplina = menu_Disciplina();
-
-					switch(opcaoDisciplina){
-						case 1:{
-							
-							retornoDisciplina = inserir_Disciplina(lista_disciplina, lista_professor, qtd_disciplina, qtd_professor);
-							if(retornoDisciplina == SUCESSO_CADASTRO){
-								printf("\nCadastro Realizado Com Sucesso\n");
-								qtd_disciplina++;
-
-							}else{
-								switch(retornoDisciplina){
-									case ERRO_CADASTRO_MATRICULA:{
-										printf("Matricula Invalida\n");
-										break;
-									}
-									case PROFESSOR_NAO_ENCONTRADO:{
-										printf("Professor Nao Encontrado\n");
-										break;
-									}
-
-									default:{
-										printf("Erro Desconhecido\n");
-										break;
-									}
-								}
-								printf("Nao foi possivel fazer o Cadastro\n");
-
-							}
-							break;
-						}
-						case 2:{
-							listar_Disciplina(lista_disciplina, qtd_disciplina);
-							break;
-						}
-						case 5:{
-							limparTela();
-							voltarDisciplina = 1;
-							break;
-						}
-						default:{
-							printf("\nOpcao Invalida\n");
-							break;
-						}
+					else
+					{
+						printf("\nLimite de professores alcançado\n");
 					}
-
+					break;
 				}
-				break;
+				case 2:
+				{
+					gerenciarListagem_Pessoa(lista_professor, qtd_professor, "\n#### Professores Cadastrados ###\n\n");
+					break;
+				}
+				case 3:
+				{
+					retornoProfessor = desativar_Pessoa(lista_professor, qtd_professor);
+					if (retornoProfessor == SUCESSO_DESATIVAR)
+						printf("\nProfessor deletado com Sucesso\n");
+					else
+						printarMensagemDeErro_Pessoa(retornoProfessor);
+					break;
+				}
+				case 4:
+				{
+					retornoProfessor = editar_Pessoa(lista_professor, qtd_professor);
+					if (retornoProfessor == SUCESSO_EDITAR)
+						printf("\nProfessor editado com Sucesso\n");
+					else
+						printarMensagemDeErro_Pessoa(retornoProfessor);
+					break;
+				}
+				case 5:
+				{
+					limparTela();
+					voltarProfessor = 1;
+					break;
+				}
+				default:
+				{
+					printf("\nOpcao Invalida\n");
+					break;
+				}
+				}
 			}
 
-			case 4:{
-				printf("\nEncerrando Sistema\n");
-				sair = 1;
-				break;
+			break;
+		}
+
+		case 3:
+		{ //Menu Disciplina
+
+			voltarDisciplina = 0;
+
+			while (!voltarDisciplina)
+			{
+
+				opcaoDisciplina = menu_Disciplina();
+
+				switch (opcaoDisciplina)
+				{
+				case 1:
+				{
+
+					retornoDisciplina = inserir_Disciplina(lista_disciplina, lista_professor, qtd_disciplina, qtd_professor);
+					if (retornoDisciplina == SUCESSO_CADASTRO)
+					{
+						printf("\nCadastro Realizado Com Sucesso\n");
+						qtd_disciplina++;
+					}
+					else
+					{
+						switch (retornoDisciplina)
+						{
+						case ERRO_CADASTRO_MATRICULA:
+						{
+							printf("Matricula Invalida\n");
+							break;
+						}
+						case PROFESSOR_NAO_ENCONTRADO:
+						{
+							printf("Professor Nao Encontrado\n");
+							break;
+						}
+
+						default:
+						{
+							printf("Erro Desconhecido\n");
+							break;
+						}
+						}
+						printf("Nao foi possivel fazer o Cadastro\n");
+					}
+					break;
+				}
+				case 2:
+				{
+					listar_Disciplina(lista_disciplina, qtd_disciplina);
+					break;
+				}
+
+				case 3:
+				{
+					//Matricular Aluno
+					retornoDisciplina = matricularAlunos(lista_disciplina, qtd_disciplina, lista_aluno, qtd_aluno);
+					if (retornoDisciplina == SUCESSO_CADASTRO)
+						printf("Aluno matriculado com sucesso!\n");
+					else
+						printf("Matricula não realizada. Por favor, tente novamente\n");
+					break;
+				}
+
+				case 4:
+				{
+					//Desmatricular Aluno
+					retornoDisciplina = desmatricularAluno(lista_disciplina, qtd_disciplina, lista_aluno, qtd_aluno);
+					if (retornoDisciplina == SUCESSO_CADASTRO)
+						printf("Desmatricula realizada com sucesso\n");
+					else
+						printf("Por favor, tente novamente\n");
+				}
+
+				case 5:
+				{
+					//Listar matriculados
+					listarMatriculados(lista_disciplina, qtd_disciplina);
+					break;
+				}
+
+				case 6:
+				{
+					//Deletar Disciplina
+					retornoDisciplina = remover_Disciplina(lista_disciplina, qtd_disciplina);
+					if (retornoDisciplina == SUCESSO_CADASTRO)
+						printf("Disciplina removida com sucesso\n");
+					else
+						printf("Por favor, tente novamente\n");
+					break;
+				}
+
+				case 7:
+				{
+					limparTela();
+					voltarDisciplina = 1;
+					break;
+				}
+				default:
+				{
+					printf("\nOpcao Invalida\n");
+					break;
+				}
+				}
 			}
-			default:{
-				printf("\nOpcao Invalida\n");
-				break;
-			}
+			break;
+		}
+
+		case 4:
+		{
+			printf("\nEncerrando Sistema\n");
+			sair = 1;
+			break;
+		}
+		default:
+		{
+			printf("\nOpcao Invalida\n");
+			break;
+		}
 		}
 	}
 }
 
-int menu_Principal(){
+int menu_Principal()
+{
 
 	int opcao_principal;
 
@@ -235,7 +319,7 @@ int menu_Principal(){
 	printf("4 - Sair\n\n");
 
 	printf("Digite a sua opcao\n");
-	scanf("%d",&opcao_principal);
+	scanf("%d", &opcao_principal);
 
 	return opcao_principal;
 }
