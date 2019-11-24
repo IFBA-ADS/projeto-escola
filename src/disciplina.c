@@ -27,33 +27,36 @@ int criar_Disciplina(Disciplina *novaDisciplina, Pessoa lista_professor[], int q
 
 	int i;
 
-	printf("\nMatricula da Disciplina\n");
+	printf("\nDigite a Matricula da Disciplina\n");
 	scanf("%d", &novaDisciplina->matricula);
 	limpaBuffer();
 
 	if (novaDisciplina->matricula <= 0)
 		return ERRO_CADASTRO_MATRICULA;
 
-	printf("\nNome da Disciplina\n");
+	printf("\nDigite o Nome da Disciplina\n");
 	cfgets(novaDisciplina->nome, TAM_NOME, stdin);
 
-	printf("\nSemestre da Disciplina\n");
+	printf("\nDigite o Semestre da Disciplina\n");
 	cfgets(novaDisciplina->semestre, 50, stdin);
 
-	printf("\nProfessor da Disciplina\n");
+	printf("\nDigite o Professor da Disciplina\n");
 	cfgets(novaDisciplina->professor, 100, stdin);
 
 	for (i = 0; i < qtd_professor; i++)
 		if (novaDisciplina->professor != lista_professor[i].nome)
 			return PROFESSOR_NAO_ENCONTRADO;
 
+	lista_disciplina[qtd_disciplina].qtd_matriculados = 0;
+
+
 	return SUCESSO_CADASTRO;
 }
 
-void remover_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina)
+int remover_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina)
 {
 	int matriculaDisciplina, indiceDaDisciplina = 0;
-	printf("DIgite a matricula da disciplina que deseja remover\n");
+	printf("Digite a matricula da disciplina que deseja remover\n");
 	scanf("%d", &matriculaDisciplina);
 	while (lista_disciplina[indiceDaDisciplina].matricula != matriculaDisciplina && indiceDaDisciplina < qtd_disciplina)
 		indiceDaDisciplina++;
@@ -61,22 +64,27 @@ void remover_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina)
 	{
 		lista_disciplina[cont] = lista_disciplina[cont + 1];
 	}
+	return SUCESSO_CADASTRO;
 }
 
 void listar_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina)
 {
 	int i;
-
-	for (i = 0; i < qtd_disciplina; i++)
+	if (qtd_disciplina > 0)
 	{
-		printf("-------\n");
-		printf("Matricula: %d\n", lista_disciplina[i].matricula);
-		printf("Nome: %s\n", lista_disciplina[i].nome);
-		printf("Semestre %s", lista_disciplina[i].semestre);
-		printf("Professor: %s\n", lista_disciplina[i].professor);
-	}
+		for (i = 0; i < qtd_disciplina; i++)
+		{
+			printf("-------\n");
+			printf("Matricula: %d\n", lista_disciplina[i].matricula);
+			printf("Nome: %s\n", lista_disciplina[i].nome);
+			printf("Semestre %s", lista_disciplina[i].semestre);
+			printf("Professor: %s\n", lista_disciplina[i].professor);
+		}
 
-	printf("----------\n");
+		printf("----------\n");
+	}
+	else
+		printf("Nenhuma disciplina cadastrada\n");
 }
 
 int editar_Disciplina(Disciplina lista[], int quantidade)
@@ -101,7 +109,7 @@ int editar_Disciplina(Disciplina lista[], int quantidade)
 }
 
 
-int matricularAlunos(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno, int qtd_matriculados)
+int matricularAlunos(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno)
 {
 	int matriculaDisciplina, matriculaAluno, indiceDaDisciplina = 0, indiceDoAluno = 0;
 	printf("Digite a matricula da disciplina\n");
@@ -113,11 +121,14 @@ int matricularAlunos(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa l
 	while (lista_aluno[indiceDoAluno].matricula != matriculaAluno && indiceDoAluno < qtd_aluno)
 		indiceDoAluno++;
 
+	int qtd_matriculados = lista_disciplina[indiceDaDisciplina].qtd_matriculados;
 	lista_disciplina[indiceDaDisciplina].alunosMatriculados[qtd_matriculados] = lista_aluno[indiceDoAluno];
+	qtd_matriculados++;
+	lista_disciplina[indiceDaDisciplina].qtd_matriculados = qtd_matriculados;	
 	return SUCESSO_CADASTRO;
 }
 
-void desmatricularAluno(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno, int qtd_matriculados)
+int desmatricularAluno(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno)
 {
 	int matriculaDisciplina, matriculaAluno, indiceDaDisciplina = 0, indiceDoAluno = 0, indiceDoMatriculado = 0;
 	printf("Digite a matricula da disciplina\n");
@@ -126,15 +137,19 @@ void desmatricularAluno(Disciplina lista_disciplina[], int qtd_disciplina, Pesso
 	scanf("%d", &matriculaAluno);
 	while (lista_disciplina[indiceDaDisciplina].matricula != matriculaDisciplina && indiceDaDisciplina < qtd_disciplina)
 		indiceDaDisciplina++;
+	int qtd_matriculados = lista_disciplina[indiceDaDisciplina].qtd_matriculados;
 	while (lista_disciplina[indiceDaDisciplina].alunosMatriculados[indiceDoMatriculado].matricula != matriculaAluno && indiceDoAluno < qtd_matriculados)
 		indiceDoMatriculado++;
 	for (int cont = indiceDoMatriculado; cont < qtd_matriculados; cont++)
 	{
 		lista_disciplina[indiceDaDisciplina].alunosMatriculados[cont] = lista_disciplina[indiceDaDisciplina].alunosMatriculados[cont + 1];
 	}
+	qtd_matriculados--;
+	lista_disciplina[indiceDaDisciplina].qtd_matriculados = qtd_matriculados;
+	return SUCESSO_CADASTRO;
 }
 
-void listarMatriculados(Disciplina lista_disciplina[], int qtd_disciplina, int qtd_matriculados)
+void listarMatriculados(Disciplina lista_disciplina[], int qtd_disciplina)
 {
 	int matriculaDisciplina, indiceDaDisciplina = 0;
 	printf("Digite o codigo da disciplina\n");
@@ -142,6 +157,8 @@ void listarMatriculados(Disciplina lista_disciplina[], int qtd_disciplina, int q
 
 	while (lista_disciplina[indiceDaDisciplina].matricula != matriculaDisciplina && indiceDaDisciplina < qtd_disciplina)
 		indiceDaDisciplina++;
+	int qtd_matriculados = lista_disciplina[indiceDaDisciplina].qtd_matriculados;
+	printf("A quantidade de matriculados eh: %d\n", qtd_matriculados);
 	printf("Os alunos matriculados sao:\n");
 	for (int cont = 0; cont < qtd_matriculados; cont++)
 	{

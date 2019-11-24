@@ -27,9 +27,10 @@ void main(){
 
 	int opcaoPrincipal, opcaoAluno, opcaoProfessor, opcaoDisciplina = 0;
 	int voltarAluno, voltarProfessor, voltarDisciplina;
-	int retornoAluno, retornoProfessor, retornoDisciplina; 
+	int retornoAluno, retornoProfessor, retornoDisciplina;
 
-	while(!sair){
+	while (!sair)
+	{
 
 		opcaoPrincipal = menu_Principal();
 
@@ -199,7 +200,6 @@ void main(){
 						case 2:{
 							listar_Disciplina(lista_disciplina, qtd_disciplina);
 							break;
-
 						}
 						case 5:{
 							limparTela();
