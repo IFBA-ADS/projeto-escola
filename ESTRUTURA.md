@@ -16,11 +16,10 @@ Vou tentar descrever quais e funções acho que precisaremos.
 
 3. **DISCIPLINAS**
 *Struct*: Nome, Código, Semestre, Professor
-	- 2ª função: cadastro de disciplina. Recebe esses 4 parâmetros acima; ![#ff9600](https://placehold.it/15/ff9600/000000?text=+)
+	- 2ª função: cadastro de disciplina. Recebe esses 4 parâmetros acima; ![#c5f015](https://placehold.it/15/c5f015/000000?text=+)
 		
-			Falta: Editar e Deletar
-
-	- 3ª função: matrícula (Inserir/Excluir aluno). Recebe 3 parâmetros: Nome do aluno, nome da disciplina, e se vamos inserir ou excluir ele; ![#ff9600](https://placehold.it/15/ff9600/000000?text=+)
+	
+	- 3ª função: matrícula (Inserir/Excluir aluno). Recebe 3 parâmetros: Nome do aluno, nome da disciplina, e se vamos inserir ou excluir ele; ![#c5f015](https://placehold.it/15/c5f015/000000?text=+)
   
 ## RELATÓRIOS
 - 4ª função: listagem de pessoal por nome. Recebe 2 parâmetros: o tipo da pessoa e o sexo *[parâmetro opcional]* (permitindo a listagem de ambos os sexos); ![#c5f015](https://placehold.it/15/c5f015/000000?text=+)
@@ -30,7 +29,7 @@ Vou tentar descrever quais e funções acho que precisaremos.
 		Listar Alunos por sexo (Masculino/Feminino)
 		Listar Professores por sexo (Masculino/Feminino)
 
-- 5ª função: listagem de pessoal por nascimento. Recebe apenas 1 parâmetro: tipo de pesssoa; ![#ff9600](https://placehold.it/15/ff9600/000000?text=+)
+- 5ª função: listagem de pessoal por nascimento. Recebe apenas 1 parâmetro: tipo de pesssoa; ![#c5f015](https://placehold.it/15/c5f015/000000?text=+)
 	#### Atende aos relatórios
 		Listar Alunos ordenados por data de nascimento
 		Listar Professores ordenados por data de nascimento
@@ -40,7 +39,7 @@ Vou tentar descrever quais e funções acho que precisaremos.
 	
 		Listar Disciplinas (dados da disciplina sem os alunos)
 
-- 7ª função: Listagem de matriculados. Recebe apenas 1 parâmetro: nome da disciplina; ![#ff0000](https://placehold.it/15/ff0000/000000?text=+)
+- 7ª função: Listagem de matriculados. Recebe apenas 1 parâmetro: nome da disciplina; ![#c5f015](https://placehold.it/15/c5f015/000000?text=+)
 	#### Atende aos relatórios
 		Listar uma disciplina (dados da disciplina e os alunos matriculados)
 
