@@ -12,6 +12,7 @@ typedef struct disciplina
 	char professor[100];
 	char semestre[50];
 	int matricula;
+	int qtd_matriculados;
 	Pessoa alunosMatriculados[LIMITE_DA_SALA];
 } Disciplina;
 
