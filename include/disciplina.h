@@ -17,27 +17,29 @@
 
 typedef struct disciplina
 {
-	char nome[100];
-	char professor[100];
-	char semestre[50];
 	int matricula;
+	char nome[100];
+	char semestre[50];
+	int matriculaProfessor;
 	int qtd_matriculados;
 	Pessoa alunosMatriculados[LIMITE_DA_SALA];
 } Disciplina;
 
 int menu_Disciplina();
 
+void printarMensagemDeErro_Disciplina(int codigoErro);
+
 int criar_Disciplina(Disciplina *novaDisciplina, Pessoa lista_professor[], int qtd_professor);
 
-void listar_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina);
+void listar_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_professor[], int qtd_professor);
 
-int editar_Disciplina(Disciplina lista[], int quantidade);
+int editar_Disciplina(Disciplina lista[], int quantidade, Pessoa lista_professor[], int qtd_professor);
 
-int matricularAlunos(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno, int qtd_matriculados);
+int matricularAlunos(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno);
 
-void desmatricularAluno(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno, int qtd_matriculados);
+int desmatricularAluno(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno);
 
-void listarMatriculados(Disciplina lista_disciplina[], int qtd_disciplina, int qtd_matriculados);
+void listarMatriculados(Disciplina lista_disciplina[], int qtd_disciplina);
 
 int procurarPorMatricula_Disciplina(Disciplina lista[], int quantidade, int matricula);
 

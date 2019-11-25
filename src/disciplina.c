@@ -14,7 +14,8 @@ int menu_Disciplina()
 	printf("4 - Desmatricular Aluno\n");
 	printf("5 - Listar Matriculados\n");
 	printf("6 - Deletar Disciplina\n");
-	printf("7 - Voltar\n\n");
+	printf("7 - Editar Disciplina\n");
+	printf("8 - Voltar\n\n");
 
 	printf("Digite a sua opcao\n");
 	scanf("%d", &opcao_Disciplina);
@@ -22,11 +23,30 @@ int menu_Disciplina()
 	return opcao_Disciplina;
 }
 
+void printarMensagemDeErro_Disciplina(int codigoErro){
+	printf("\nNao foi possivel executar a acao. Erro: ");
+	switch(codigoErro)
+	{
+		case ERRO_CADASTRO_MATRICULA:
+		{
+			printf("Matricula Invalida\n");
+			break;
+		}
+		case PROFESSOR_NAO_ENCONTRADO:
+		{
+			printf("Professor Nao Encontrado\n");
+			break;
+		}
+		default:
+		{
+			printf("Erro Desconhecido\n");
+			break;
+		}
+	}
+}
+
 int criar_Disciplina(Disciplina *novaDisciplina, Pessoa lista_professor[], int qtd_professor)
 {
-
-	int i;
-
 	printf("\nDigite a Matricula da Disciplina\n");
 	scanf("%d", &novaDisciplina->matricula);
 	limpaBuffer();
@@ -40,54 +60,59 @@ int criar_Disciplina(Disciplina *novaDisciplina, Pessoa lista_professor[], int q
 	printf("\nDigite o Semestre da Disciplina\n");
 	cfgets(novaDisciplina->semestre, 50, stdin);
 
-	printf("\nDigite o Professor da Disciplina\n");
-	cfgets(novaDisciplina->professor, 100, stdin);
+	printf("\nDigite a matricula do Professor da Disciplina\n");
+	scanf("%d", &novaDisciplina->matriculaProfessor);
+	limpaBuffer();
 
-	for (i = 0; i < qtd_professor; i++)
-		if (novaDisciplina->professor != lista_professor[i].nome)
-			return PROFESSOR_NAO_ENCONTRADO;
+	int index = procurarPorMatricula_Pessoa(lista_professor, qtd_professor, novaDisciplina->matriculaProfessor);
 
-	lista_disciplina[qtd_disciplina].qtd_matriculados = 0;
+	if(index < 0)
+		return PROFESSOR_NAO_ENCONTRADO;
 
+	novaDisciplina->qtd_matriculados = 0;
 
 	return SUCESSO_CADASTRO;
 }
 
 int remover_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina)
 {
-	int matriculaDisciplina, indiceDaDisciplina = 0;
+	int matriculaDisciplina, indiceDaDisciplina = 0, cont;
 	printf("Digite a matricula da disciplina que deseja remover\n");
 	scanf("%d", &matriculaDisciplina);
 	while (lista_disciplina[indiceDaDisciplina].matricula != matriculaDisciplina && indiceDaDisciplina < qtd_disciplina)
 		indiceDaDisciplina++;
-	for (int cont = indiceDaDisciplina; cont < qtd_disciplina; cont++)
+	for (cont = indiceDaDisciplina; cont < qtd_disciplina; cont++)
 	{
 		lista_disciplina[cont] = lista_disciplina[cont + 1];
 	}
 	return SUCESSO_CADASTRO;
 }
 
-void listar_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina)
+void listar_Disciplina(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_professor[], int qtd_professor)
 {
-	int i;
 	if (qtd_disciplina > 0)
 	{
+		int i, index;
 		for (i = 0; i < qtd_disciplina; i++)
 		{
 			printf("-------\n");
-			printf("Matricula: %d\n", lista_disciplina[i].matricula);
-			printf("Nome: %s\n", lista_disciplina[i].nome);
-			printf("Semestre %s", lista_disciplina[i].semestre);
-			printf("Professor: %s\n", lista_disciplina[i].professor);
-		}
+			printf("Matricula: %d;\n", lista_disciplina[i].matricula);
+			printf("Nome: %s;\n", lista_disciplina[i].nome);
+			printf("Semestre %s;\n", lista_disciplina[i].semestre);
 
-		printf("----------\n");
+			index = procurarPorMatricula_Pessoa(lista_professor, qtd_professor, lista_disciplina[i].matriculaProfessor);
+			if(index >= 0)
+				printf("Professor: %s;\n", lista_professor[index].nome);
+			else
+				printf("Professor nao encontrado;\n");
+			printf("-------\n");
+		}
 	}
 	else
 		printf("Nenhuma disciplina cadastrada\n");
 }
 
-int editar_Disciplina(Disciplina lista[], int quantidade)
+int editar_Disciplina(Disciplina lista[], int quantidade, Pessoa lista_professor[], int qtd_professor)
 {
 	int matricula;
 	printf("\nDigite a Matricula para procurar\n");
@@ -100,14 +125,13 @@ int editar_Disciplina(Disciplina lista[], int quantidade)
 	if (indice >= 0)
 	{
 		Disciplina disciplina;
-		//resultado = criar_disciplina(&disciplina); É correto mexer diretamente com a Struct?
+		resultado = criar_Disciplina(&disciplina, lista_professor, qtd_professor);
 		if (resultado == SUCESSO_EDITAR)
 			lista[indice] = disciplina;
 	}
 
 	return resultado;
 }
-
 
 int matricularAlunos(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno)
 {
@@ -130,7 +154,7 @@ int matricularAlunos(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa l
 
 int desmatricularAluno(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa lista_aluno[], int qtd_aluno)
 {
-	int matriculaDisciplina, matriculaAluno, indiceDaDisciplina = 0, indiceDoAluno = 0, indiceDoMatriculado = 0;
+	int matriculaDisciplina, matriculaAluno, indiceDaDisciplina = 0, indiceDoAluno = 0, indiceDoMatriculado = 0, cont;
 	printf("Digite a matricula da disciplina\n");
 	scanf("%d", &matriculaDisciplina);
 	printf("Digite a matricula do aluno\n");
@@ -140,7 +164,7 @@ int desmatricularAluno(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa
 	int qtd_matriculados = lista_disciplina[indiceDaDisciplina].qtd_matriculados;
 	while (lista_disciplina[indiceDaDisciplina].alunosMatriculados[indiceDoMatriculado].matricula != matriculaAluno && indiceDoAluno < qtd_matriculados)
 		indiceDoMatriculado++;
-	for (int cont = indiceDoMatriculado; cont < qtd_matriculados; cont++)
+	for (cont = indiceDoMatriculado; cont < qtd_matriculados; cont++)
 	{
 		lista_disciplina[indiceDaDisciplina].alunosMatriculados[cont] = lista_disciplina[indiceDaDisciplina].alunosMatriculados[cont + 1];
 	}
@@ -151,7 +175,7 @@ int desmatricularAluno(Disciplina lista_disciplina[], int qtd_disciplina, Pessoa
 
 void listarMatriculados(Disciplina lista_disciplina[], int qtd_disciplina)
 {
-	int matriculaDisciplina, indiceDaDisciplina = 0;
+	int matriculaDisciplina, indiceDaDisciplina = 0, cont;
 	printf("Digite o codigo da disciplina\n");
 	scanf("%d", &matriculaDisciplina);
 
@@ -160,7 +184,7 @@ void listarMatriculados(Disciplina lista_disciplina[], int qtd_disciplina)
 	int qtd_matriculados = lista_disciplina[indiceDaDisciplina].qtd_matriculados;
 	printf("A quantidade de matriculados eh: %d\n", qtd_matriculados);
 	printf("Os alunos matriculados sao:\n");
-	for (int cont = 0; cont < qtd_matriculados; cont++)
+	for (cont = 0; cont < qtd_matriculados; cont++)
 	{
 		printf("%s\n", lista_disciplina[indiceDaDisciplina].alunosMatriculados[cont].nome);
 	}
@@ -174,4 +198,3 @@ int procurarPorMatricula_Disciplina(Disciplina lista[], int quantidade, int matr
 			indice = i;
 	return indice;
 }
-
